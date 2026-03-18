@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K Rankings - ASP Model FF</title>
+<title>K Rankings — ASP Model FF</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -36,8 +36,9 @@
   .table-wrap { overflow-x: auto; padding: 0 2rem 4rem; }
   table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 0.85rem; }
   thead tr { background: var(--header-bg); border-bottom: 1px solid var(--border-bright); }
-  th { padding: 0.65rem 1rem; text-align: left; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #999; white-space: nowrap; cursor: pointer; user-select: none; transition: color 0.15s; }
-  th:hover { color: var(--text); }
+  th { padding: 0.65rem 1rem; text-align: left; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #999; white-space: nowrap; }
+  th.sortable { cursor: pointer; user-select: none; transition: color 0.15s; }
+  th.sortable:hover { color: var(--text); }
   th.sorted { color: var(--accent); }
   th:first-child { width: 56px; text-align: center; }
   tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; animation: fadeIn 0.3s ease both; }
@@ -50,9 +51,8 @@
   .rank-2 td:first-child { color: #c0c0c0 !important; }
   .rank-3 td:first-child { color: #cd7f32 !important; }
   .player-name { font-weight: 500; color: var(--accent); }
-  .team-badge { font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 600; background: #1a1a1a; padding: 0.2rem 0.5rem; border-radius: 3px; border: 1px solid var(--border-bright); }
+  .team-badge { font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 600; background: #333333; padding: 0.2rem 0.5rem; border-radius: 3px; border: 1px solid var(--border-bright); }
   .asp-score { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
-  .round-grade { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: #bbb; }
   .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6rem 2rem; gap: 1rem; color: var(--muted); }
   .spinner { width: 32px; height: 32px; border: 2px solid var(--border-bright); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -108,8 +108,10 @@
   <table id="rankings-table" style="display:none">
     <thead>
       <tr>
-        <th data-col="3" class="sorted">ASP v2 <span class="sort-arrow">↓</span></th>
-        
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Team</th>
+        <th class="sortable sorted" id="asp-header">kASP v1 <span class="sort-arrow">↓</span></th>
       </tr>
     </thead>
     <tbody id="table-body"></tbody>
@@ -122,16 +124,15 @@ const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZM
 
 const TEAM_COLORS = {
   ARI:'#97233f',ATL:'#a71930',BAL:'#241773',BUF:'#00338d',CAR:'#0085ca',
-  CHI:'#0b162a',CIN:'#fb4f14',CLE:'#ff3c00',DAL:'#003594',DEN:'#fb4f14',
+  CHI:'#c83803',CIN:'#fb4f14',CLE:'#ff3c00',DAL:'#003594',DEN:'#fb4f14',
   DET:'#0076b6',GB:'#203731',HOU:'#03202f',IND:'#002c5f',JAX:'#006778',
   KC:'#e31837',LAC:'#0080c6',LAR:'#003594',LV:'#a5acaf',MIA:'#008e97',
-  MIN:'#4f2683',NE:'#002244',NO:'#d3bc8d',NYG:'#0b2265',NYJ:'#125740',
-  PHI:'#004c54',PIT:'#ffb612',SEA:'#002244',SF:'#aa0000',TB:'#d50a0a',
+  MIN:'#4f2683',NE:'#c60c30',NO:'#d3bc8d',NYG:'#0b2265',NYJ:'#125740',
+  PHI:'#004c54',PIT:'#ffb612',SEA:'#69be28',SF:'#aa0000',TB:'#d50a0a',
   TEN:'#4b92db',WSH:'#773141',
 };
 
 let allRows = [];
-let sortCol = 3;
 let sortAsc = false;
 
 function parseCSV(text) {
@@ -146,7 +147,7 @@ function parseCSV(text) {
   });
 }
 
-function teamColor(abbr) { return TEAM_COLORS[abbr] || '#aaaaaa'; }
+function teamColor(abbr) { return TEAM_COLORS[abbr] || '#bbbbbb'; }
 
 async function loadData() {
   try {
@@ -180,7 +181,6 @@ function renderTable(rows) {
       <td><span class="player-name">${vals[0] || '—'}</span></td>
       <td><span class="team-badge" style="color:${teamColor(team)}">${team || '—'}</span></td>
       <td><span class="asp-score">${!isNaN(asp) ? asp.toFixed(2) : '—'}</span></td>
-
     `;
     tbody.appendChild(tr);
   });
@@ -191,24 +191,15 @@ function filterTable() {
   renderTable(q ? allRows.filter(r => r.some(v => v.toLowerCase().includes(q))) : allRows);
 }
 
-document.querySelectorAll('th[data-col]').forEach(th => {
-  th.addEventListener('click', () => {
-    const col = parseInt(th.dataset.col);
-    if (sortCol === col) { sortAsc = !sortAsc; }
-    else { sortCol = col; sortAsc = col !== 3; }
-    document.querySelectorAll('th[data-col]').forEach(t => {
-      t.classList.toggle('sorted', parseInt(t.dataset.col) === col);
-      const arrow = t.querySelector('.sort-arrow');
-      if (arrow) arrow.textContent = parseInt(t.dataset.col) === col ? (sortAsc ? '↑' : '↓') : '↕';
-    });
-    allRows.sort((a, b) => {
-      const av = a[col] || '', bv = b[col] || '';
-      const an = parseFloat(av), bn = parseFloat(bv);
-      if (!isNaN(an) && !isNaN(bn)) return sortAsc ? an - bn : bn - an;
-      return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
-    });
-    filterTable();
+document.getElementById('asp-header').addEventListener('click', () => {
+  sortAsc = !sortAsc;
+  document.querySelector('#asp-header .sort-arrow').textContent = sortAsc ? '↑' : '↓';
+  allRows.sort((a, b) => {
+    const an = parseFloat(a[2]), bn = parseFloat(b[2]);
+    if (!isNaN(an) && !isNaN(bn)) return sortAsc ? an - bn : bn - an;
+    return 0;
   });
+  filterTable();
 });
 
 loadData();
