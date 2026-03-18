@@ -84,7 +84,7 @@
   <div class="hero-left">
     <div class="pos-badge">2026 Season · ASP Model</div>
     <h1>QB<br>Rankings</h1>
-    <div class="hero-meta">Updates automatically</div>
+    <div class="hero-meta">No one is 100% QB-proof.</div>
   </div>
   <div class="hero-right">
     <div class="asp-label">Players Ranked</div>
@@ -161,7 +161,13 @@ async function loadData() {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('rankings-table').style.display = 'table';
     document.getElementById('player-count').textContent = allRows.length;
-    document.getElementById('last-updated').textContent = 'Updated: ' + new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const masterCSV = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZMZBUZScwDM3nmNX2OtFPbQ1Oe72qAsC2uisQG5TA2nb40jkvIcaiiIEM-EnLx_WGNPl/pub?gid=255609940&single=true&output=csv');
+    const masterText = await masterCSV.text();
+    const masterRows = parseCSV(masterText);
+    const rawDate = masterRows[2] && masterRows[2][9] ? masterRows[2][9] : '';
+    const dateObj = rawDate ? new Date(rawDate) : null;
+    const formatted = dateObj ? dateObj.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+    document.getElementById('last-updated').textContent = formatted ? 'Updated: ' + formatted : '';
     renderTable(allRows);
   } catch(e) {
     document.getElementById('loading').style.display = 'none';
