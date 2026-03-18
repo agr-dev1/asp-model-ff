@@ -7,66 +7,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --border: #222222;
-    --border-bright: #333333;
-    --text: #f0f0f0;
-    --muted: #666666;
-    --accent: #ffffff;
-    --accent-dim: #aaaaaa;
-    --rank-col: #1a1a1a;
-    --row-hover: #161616;
-    --header-bg: #0f0f0f;
+    --bg: #0a0a0a; --surface: #181818; --border: #2a2a2a; --border-bright: #3a3a3a;
+    --text: #f0f0f0; --muted: #888888; --accent: #ffffff; --accent-dim: #cccccc;
+    --rank-col: #141414; --row-hover: #181818; --header-bg: #111111;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
-  nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2rem; height: 56px; border-bottom: 1px solid var(--border);
-    background: var(--bg); position: sticky; top: 0; z-index: 100;
-  }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; border-bottom: 1px solid var(--border); background: #080808; position: sticky; top: 0; z-index: 100; }
   .nav-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; }
   .nav-links { display: flex; gap: 0.25rem; }
-  .nav-links a {
-    color: var(--muted); text-decoration: none; font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.75rem;
-    border-radius: 4px; transition: color 0.15s, background 0.15s;
-  }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.75rem; border-radius: 4px; transition: color 0.15s, background 0.15s; }
   .nav-links a:hover { color: var(--text); background: var(--surface); }
   .nav-links a.active { color: var(--accent); background: var(--surface); }
-  .hero {
-    padding: 3rem 2rem 2rem; border-bottom: 1px solid var(--border);
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
-  }
+  .hero { padding: 3rem 2rem 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; background: #0f0f0f; }
   .pos-badge { display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.5rem; }
   .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: 0.04em; line-height: 0.9; color: var(--accent); }
-  .hero-meta { font-size: 0.75rem; color: var(--muted); margin-top: 1rem; font-family: 'DM Mono', monospace; }
+  .hero-meta { font-size: 0.75rem; color: #aaaaaa; margin-top: 1rem; font-family: 'DM Mono', monospace; }
   .hero-right { text-align: right; }
   .asp-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 0.25rem; }
   .player-count { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--accent); line-height: 1; }
-  .controls {
-    padding: 1rem 2rem; border-bottom: 1px solid var(--border);
-    display: flex; gap: 1rem; align-items: center;
-  }
+  .controls { padding: 1rem 2rem; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: center; background: #0c0c0c; }
   .search-wrap { position: relative; flex: 1; max-width: 320px; }
-  .search-wrap input {
-    width: 100%; background: var(--surface); border: 1px solid var(--border-bright);
-    color: var(--text); padding: 0.5rem 0.75rem 0.5rem 2.25rem; border-radius: 4px;
-    font-family: 'Inter', sans-serif; font-size: 0.8rem; outline: none; transition: border-color 0.15s;
-  }
-  .search-wrap input:focus { border-color: #555; }
+  .search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); padding: 0.5rem 0.75rem 0.5rem 2.25rem; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.8rem; outline: none; transition: border-color 0.15s; }
+  .search-wrap input:focus { border-color: #666; }
   .search-wrap input::placeholder { color: var(--muted); }
   .search-icon { position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.8rem; }
   .last-updated { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-left: auto; }
   .table-wrap { overflow-x: auto; padding: 0 2rem 4rem; }
   table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 0.85rem; }
   thead tr { background: var(--header-bg); border-bottom: 1px solid var(--border-bright); }
-  th {
-    padding: 0.65rem 1rem; text-align: left; font-size: 0.65rem; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-    white-space: nowrap; cursor: pointer; user-select: none; transition: color 0.15s;
-  }
+  th { padding: 0.65rem 1rem; text-align: left; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #999; white-space: nowrap; cursor: pointer; user-select: none; transition: color 0.15s; }
   th:hover { color: var(--text); }
   th.sorted { color: var(--accent); }
   th:first-child { width: 56px; text-align: center; }
@@ -75,31 +45,22 @@
   tbody tr:nth-child(5n) { border-bottom: 1px solid var(--border-bright); }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   td { padding: 0.75rem 1rem; color: var(--text); white-space: nowrap; }
-  td:first-child {
-    text-align: center; font-family: 'DM Mono', monospace; font-size: 0.75rem;
-    color: var(--muted); background: var(--rank-col); border-right: 1px solid var(--border); width: 56px;
-  }
-  .rank-1 td:first-child { color: #ffd700; }
-  .rank-2 td:first-child { color: #c0c0c0; }
-  .rank-3 td:first-child { color: #cd7f32; }
+  td:first-child { text-align: center; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #888; background: var(--rank-col); border-right: 1px solid var(--border); width: 56px; }
+  .rank-1 td:first-child { color: #ffd700 !important; }
+  .rank-2 td:first-child { color: #c0c0c0 !important; }
+  .rank-3 td:first-child { color: #cd7f32 !important; }
   .player-name { font-weight: 500; color: var(--accent); }
-  .team-badge { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); background: var(--surface); padding: 0.2rem 0.5rem; border-radius: 3px; border: 1px solid var(--border); }
+  .team-badge { font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 600; background: #1a1a1a; padding: 0.2rem 0.5rem; border-radius: 3px; border: 1px solid var(--border-bright); }
   .asp-score { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
-  .round-grade { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--accent-dim); }
+  .round-grade { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: #bbb; }
   .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6rem 2rem; gap: 1rem; color: var(--muted); }
   .spinner { width: 32px; height: 32px; border: 2px solid var(--border-bright); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading p { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; }
   .error-msg { padding: 4rem 2rem; text-align: center; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.8rem; }
-  .sort-arrow { margin-left: 4px; opacity: 0.5; }
+  .sort-arrow { margin-left: 4px; opacity: 0.4; }
   th.sorted .sort-arrow { opacity: 1; }
-  @media (max-width: 600px) {
-    nav { padding: 0 1rem; }
-    .hero { padding: 2rem 1rem 1.5rem; }
-    .controls { padding: 0.75rem 1rem; }
-    .table-wrap { padding: 0 0 3rem; }
-    .nav-links { display: none; }
-  }
+  @media (max-width: 600px) { nav { padding: 0 1rem; } .hero { padding: 2rem 1rem 1.5rem; } .controls { padding: 0.75rem 1rem; } .table-wrap { padding: 0 0 3rem; } .nav-links { display: none; } }
 </style>
 </head>
 <body>
@@ -114,6 +75,8 @@
     <a href="te.html">TE</a>
     <a href="k.html" class="active">K</a>
     <a href="dst.html">DST</a>
+    <a href="about.html">About ASP</a>
+    <a href="draft-notes.html">Draft Notes</a>
   </div>
 </nav>
 
@@ -121,7 +84,7 @@
   <div class="hero-left">
     <div class="pos-badge">2026 Season · ASP Model</div>
     <h1>K<br>Rankings</h1>
-    <div class="hero-meta" id="hero-meta">Loading...</div>
+    <div class="hero-meta">Updates automatically</div>
   </div>
   <div class="hero-right">
     <div class="asp-label">Players Ranked</div>
@@ -145,64 +108,64 @@
   <table id="rankings-table" style="display:none">
     <thead>
       <tr>
-        <th onclick="sortTable(0)">Rank <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(1)">Player <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(2)">Team <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(3)" class="sorted">ASP v2 <span class="sort-arrow">↓</span></th>
-        <th onclick="sortTable(4)">Round Grade <span class="sort-arrow">↕</span></th>
+        <th data-col="0">Rank <span class="sort-arrow">↕</span></th>
+        <th data-col="1">Player <span class="sort-arrow">↕</span></th>
+        <th data-col="2">Team <span class="sort-arrow">↕</span></th>
+        <th data-col="3" class="sorted">ASP v2 <span class="sort-arrow">↓</span></th>
+        
       </tr>
     </thead>
     <tbody id="table-body"></tbody>
   </table>
-  <div class="error-msg" id="error-msg" style="display:none">
-    Unable to load rankings. Please try refreshing.
-  </div>
+  <div class="error-msg" id="error-msg" style="display:none">Unable to load rankings. Please try refreshing.</div>
 </div>
 
 <script>
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZMZBUZScwDM3nmNX2OtFPbQ1Oe72qAsC2uisQG5TA2nb40jkvIcaiiIEM-EnLx_WGNPl/pub?gid=550233438&single=true&output=csv';
+
+const TEAM_COLORS = {
+  ARI:'#97233f',ATL:'#a71930',BAL:'#241773',BUF:'#00338d',CAR:'#0085ca',
+  CHI:'#0b162a',CIN:'#fb4f14',CLE:'#ff3c00',DAL:'#003594',DEN:'#fb4f14',
+  DET:'#0076b6',GB:'#203731',HOU:'#03202f',IND:'#002c5f',JAX:'#006778',
+  KC:'#e31837',LAC:'#0080c6',LAR:'#003594',LV:'#a5acaf',MIA:'#008e97',
+  MIN:'#4f2683',NE:'#002244',NO:'#d3bc8d',NYG:'#0b2265',NYJ:'#125740',
+  PHI:'#004c54',PIT:'#ffb612',SEA:'#002244',SF:'#aa0000',TB:'#d50a0a',
+  TEN:'#4b92db',WSH:'#773141',
+};
 
 let allRows = [];
 let sortCol = 3;
 let sortAsc = false;
 
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  return lines.map(line => {
-    const cols = [];
-    let current = '';
-    let inQuotes = false;
+  return text.trim().split('\n').map(line => {
+    const cols = []; let cur = ''; let inQ = false;
     for (let i = 0; i < line.length; i++) {
-      if (line[i] === '"') { inQuotes = !inQuotes; }
-      else if (line[i] === ',' && !inQuotes) { cols.push(current.trim()); current = ''; }
-      else { current += line[i]; }
+      if (line[i] === '"') { inQ = !inQ; }
+      else if (line[i] === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += line[i]; }
     }
-    cols.push(current.trim());
-    return cols;
+    cols.push(cur.trim()); return cols;
   });
 }
+
+function teamColor(abbr) { return TEAM_COLORS[abbr] || '#aaaaaa'; }
 
 async function loadData() {
   try {
     const res = await fetch(SHEET_URL);
-    if (!res.ok) throw new Error('Failed to fetch');
+    if (!res.ok) throw new Error('fetch failed');
     const text = await res.text();
     const rows = parseCSV(text);
-
-    // Skip header row, filter empty
-    allRows = rows.slice(1).filter(r => r[0] && r[0].trim() !== '');
-
+    allRows = rows.slice(1).filter(r => r[0] && r[0].trim());
     document.getElementById('loading').style.display = 'none';
     document.getElementById('rankings-table').style.display = 'table';
     document.getElementById('player-count').textContent = allRows.length;
-    document.getElementById('hero-meta').textContent = 'Sorted by ASP v2 score · Updates automatically';
-    document.getElementById('last-updated').textContent = 'Updated: ' + new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
-
+    document.getElementById('last-updated').textContent = 'Updated: ' + new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     renderTable(allRows);
   } catch(e) {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('error-msg').style.display = 'block';
-    document.getElementById('error-msg').textContent = 'Unable to load rankings. Please try refreshing. (' + e.message + ')';
   }
 }
 
@@ -214,12 +177,13 @@ function renderTable(rows) {
     tr.className = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
     tr.style.animationDelay = Math.min(i * 0.02, 0.5) + 's';
     const asp = parseFloat(vals[2]);
+    const team = (vals[1] || '').trim();
     tr.innerHTML = `
       <td>${i + 1}</td>
       <td><span class="player-name">${vals[0] || '—'}</span></td>
-      <td><span class="team-badge">${vals[1] || '—'}</span></td>
+      <td><span class="team-badge" style="color:${teamColor(team)}">${team || '—'}</span></td>
       <td><span class="asp-score">${!isNaN(asp) ? asp.toFixed(2) : '—'}</span></td>
-      <td><span class="round-grade">${vals[3] || '—'}</span></td>
+
     `;
     tbody.appendChild(tr);
   });
@@ -230,25 +194,25 @@ function filterTable() {
   renderTable(q ? allRows.filter(r => r.some(v => v.toLowerCase().includes(q))) : allRows);
 }
 
-function sortTable(col) {
-  if (sortCol === col) { sortAsc = !sortAsc; }
-  else { sortCol = col; sortAsc = col !== 3; }
-
-  document.querySelectorAll('th').forEach((th, i) => {
-    th.classList.toggle('sorted', i === col);
-    const arrow = th.querySelector('.sort-arrow');
-    if (arrow) arrow.textContent = i === col ? (sortAsc ? '↑' : '↓') : '↕';
+document.querySelectorAll('th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = parseInt(th.dataset.col);
+    if (sortCol === col) { sortAsc = !sortAsc; }
+    else { sortCol = col; sortAsc = col !== 3; }
+    document.querySelectorAll('th[data-col]').forEach(t => {
+      t.classList.toggle('sorted', parseInt(t.dataset.col) === col);
+      const arrow = t.querySelector('.sort-arrow');
+      if (arrow) arrow.textContent = parseInt(t.dataset.col) === col ? (sortAsc ? '↑' : '↓') : '↕';
+    });
+    allRows.sort((a, b) => {
+      const av = a[col] || '', bv = b[col] || '';
+      const an = parseFloat(av), bn = parseFloat(bv);
+      if (!isNaN(an) && !isNaN(bn)) return sortAsc ? an - bn : bn - an;
+      return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+    });
+    filterTable();
   });
-
-  allRows.sort((a, b) => {
-    const av = a[col] || '', bv = b[col] || '';
-    const an = parseFloat(av), bn = parseFloat(bv);
-    if (!isNaN(an) && !isNaN(bn)) return sortAsc ? an - bn : bn - an;
-    return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
-  });
-
-  filterTable();
-}
+});
 
 loadData();
 </script>

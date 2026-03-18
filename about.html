@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About the ASP Model — ASP Model FF</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0a0a0a; --surface: #181818; --border: #2a2a2a; --border-bright: #3a3a3a; --text: #f0f0f0; --muted: #888888; --accent: #ffffff; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; border-bottom: 1px solid var(--border); background: #080808; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.75rem; border-radius: 4px; transition: color 0.15s, background 0.15s; }
+  .nav-links a:hover { color: var(--text); background: var(--surface); }
+  .nav-links a.active { color: var(--accent); background: var(--surface); }
+  .hero { padding: 3rem 2rem 2rem; border-bottom: 1px solid var(--border); background: #0f0f0f; }
+  .pos-badge { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.5rem; }
+  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: 0.04em; line-height: 0.9; color: var(--accent); }
+  .content { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+  .content p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
+  .content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em; color: var(--accent); margin: 2.5rem 0 1rem; }
+  .content ul { list-style: none; margin-bottom: 1.25rem; }
+  .content ul li { color: #ccc; font-size: 0.95rem; line-height: 1.75; padding: 0.3rem 0 0.3rem 1.25rem; border-left: 2px solid var(--border-bright); margin-bottom: 0.5rem; padding-left: 1rem; }
+  .placeholder-note { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border-bright); border-radius: 4px; padding: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 600px) { nav { padding: 0 1rem; } .nav-links { display: none; } .content { padding: 2rem 1rem 4rem; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">ASP Model FF</a>
+  <div class="nav-links">
+    <a href="index.html">Overall</a>
+    <a href="qb.html">QB</a>
+    <a href="rb.html">RB</a>
+    <a href="wr.html">WR</a>
+    <a href="te.html">TE</a>
+    <a href="k.html">K</a>
+    <a href="dst.html">DST</a>
+    <a href="about.html" class="active">About ASP</a>
+    <a href="draft-notes.html">Draft Notes</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="pos-badge">2026 Season · ASP Model</div>
+  <h1>About the<br>ASP Model</h1>
+</div>
+<div class="content">
+  <div class="placeholder-note">✏️ This page is ready for your content. Edit about.html to fill it in.</div>
+  <p>Add your explanation of the ASP Model here — what it is, how it works, and why you built it.</p>
+</div>
+</body>
+</html>
