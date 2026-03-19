@@ -75,7 +75,7 @@
   .modal-close:hover { color: #fff; }
   .modal-pos { font-family: 'Bebas Neue', sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; color: #888; margin-bottom: 0.25rem; }
   .modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: #fff; line-height: 1; margin-bottom: 1.25rem; }
-  .modal-stats { display: flex; gap: 1.5rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid #2a2a2a; }
+  .modal-stats { display: flex; gap: 2.5rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid #2a2a2a; }
   .modal-stat { display: flex; flex-direction: column; gap: 0.25rem; }
   .modal-stat-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #666; }
   .modal-stat-value { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 500; color: #fff; }
@@ -187,6 +187,20 @@ const TEAM_COLORS = {
   TEN:'#4b92db',WSH:'#773141',
 };
 
+const TEAM_NAMES = {
+  ARI:'Arizona\nCardinals',ATL:'Atlanta\nFalcons',BAL:'Baltimore\nRavens',
+  BUF:'Buffalo\nBills',CAR:'Carolina\nPanthers',CHI:'Chicago\nBears',
+  CIN:'Cincinnati\nBengals',CLE:'Cleveland\nBrowns',DAL:'Dallas\nCowboys',
+  DEN:'Denver\nBroncos',DET:'Detroit\nLions',GB:'Green Bay\nPackers',
+  HOU:'Houston\nTexans',IND:'Indianapolis\nColts',JAX:'Jacksonville\nJaguars',
+  KC:'Kansas City\nChiefs',LAC:'LA\nChargers',LAR:'LA\nRams',
+  LV:'Las Vegas\nRaiders',MIA:'Miami\nDolphins',MIN:'Minnesota\nVikings',
+  NE:'New England\nPatriots',NO:'New Orleans\nSaints',NYG:'New York\nGiants',
+  NYJ:'New York\nJets',PHI:'Philadelphia\nEagles',PIT:'Pittsburgh\nSteelers',
+  SEA:'Seattle\nSeahawks',SF:'San Francisco\n49ers',TB:'Tampa Bay\nBuccaneers',
+  TEN:'Tennessee\nTitans',WSH:'Washington\nCommanders',
+};
+  
 let allRows = [];
 let sortCol = 3;
 let sortAsc = false;
@@ -292,8 +306,8 @@ function openModal(vals) {
       <span class="modal-stat-value">${parseFloat(vals[2]).toFixed(2) || '-'}</span>
     </div>
     <div class="modal-stat">
-      <span class="modal-stat-label">Round Grade</span>
-      <span class="modal-stat-value">${vals[3] || '-'}</span>
+      <span class="modal-stat-label">Team</span>
+      <span class="modal-stat-value" style="color:#ffffff; white-space:pre-line; line-height:1.3">${TEAM_NAMES[vals[1].trim()] || vals[1] || '—'}</span>
     </div>
   `;
   const notes = vals[4] ? vals[4].trim() : '';
