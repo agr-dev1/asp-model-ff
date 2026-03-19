@@ -234,6 +234,8 @@ function renderTable(rows) {
   tbody.innerHTML = '';
   rows.forEach((vals, i) => {
     const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.addEventListener('click', () => openModal(vals));
     tr.className = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
     tr.style.animationDelay = Math.min(i * 0.02, 0.5) + 's';
     const asp = parseFloat(vals[2]);
