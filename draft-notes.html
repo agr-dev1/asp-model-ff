@@ -24,13 +24,43 @@
   .content ul { list-style: none; margin-bottom: 1.25rem; }
   .content ul li { color: #ccc; font-size: 0.95rem; line-height: 1.75; padding: 0.3rem 0 0.3rem 1rem; border-left: 2px solid var(--border-bright); margin-bottom: 0.5rem; }
   .placeholder-note { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border-bright); border-radius: 4px; padding: 1rem; margin-bottom: 2rem; }
-  @media (max-width: 600px) { nav { padding: 0 1rem; } .nav-links { display: none; } .content { padding: 2rem 1rem 4rem; } }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
+  .drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: #0a0a0a; border-left: 1px solid #2a2a2a; z-index: 200; transition: right 0.3s ease; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .drawer a { color: #888; text-decoration: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.75rem 0; border-bottom: 1px solid #1a1a1a; transition: color 0.15s; }
+  .drawer a:hover, .drawer a.active { color: #fff; }
+  .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; }
+  .drawer-open .drawer { right: 0; }
+  .drawer-open .drawer-overlay { display: block; }
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero { padding: 2rem 1rem 1.5rem; }
+    .controls { padding: 0.75rem 1rem; }
+    .table-wrap { padding: 0 0 3rem; }
+  }
 </style>
 </head>
 <body>
 <nav>
   <a class="nav-brand" href="index.html">ASP Model FF</a>
   <div class="nav-links">
+    <a href="index.html">Overall</a>
+    <a href="qb.html">QB</a>
+    <a href="rb.html">RB</a>
+    <a href="wr.html">WR</a>
+    <a href="te.html">TE</a>
+    <a href="k.html">K</a>
+    <a href="dst.html">DST</a>
+    <a href="about.html">About ASP</a>
+    <a href="draft-notes.html" class="active">Draft Notes</a>
+  </div>
+  <button class="hamburger" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div class="drawer">
     <a href="index.html">Overall</a>
     <a href="qb.html">QB</a>
     <a href="rb.html">RB</a>
@@ -64,7 +94,7 @@
 <p>GENERALLY, teams that make more moves, win more. In redraft particularly, the bottom of your roster should be churning on a weekly basis. Maybe someone on the depth chart had an injury in front and now is the starter, maybe he has shown flashes, maybe there has been a trade - whatever the circumstances are. Some of these guys will be one week wonders, but some of them will genuinely improve your roster and/or can be used as trade fodder later. </p>
 <p>Sit your high picks. Not immediately, obviously. Not after one bad week. But if there is a clear pattern developing where they aren't putting up the expected points, they will cost you weeks. Don't get too attached to the draft capital, because once they are on your roster, it doesn't really matter. </p>
 <p>Situation matters. Take Ashton Jeanty. I think he is a phenomenal talent. His contact balance is elite and he is so good with the ball in his hands. Problem is, the 2025 Raiders had such a dogshit offensive line. It was OFFENSIVE! He was getting hit behind the line most carries. Terrible blocking, terrible play calls, terrible scheming. As more info comes out about the short-lived Pete Carroll regime, this isn't surprising. And while he still put up a plenty respectable season, anyone who watched him play knows there is so much more meat on the bone - he is the real deal. But despite talent, situation does matter. See also: Sam Darnold, Daniel Jones.</p>
-<p>Don't be scared to reach, especially in later rounds. A 1st round vs 3rd round grade... That's touch. But a 10th vs 11th, who really cares at that point. Get your guys. You'll be happier playing those teams too. ADP matters less and less for each round that passes.</p>
+<p>Don't be scared to reach, especially in later rounds. A 1st round vs 3rd round grade... That's tough. But a 10th vs 11th, who really cares at that point. Get your guys. You'll be happier playing those teams too. ADP matters less and less for each round that passes.</p>
 <p>Rookies are great, but risky. They also have odd ADPs. Some of them get inflated and overhyped, try to avoid those. Some are seen as risky, and there can be good value there. Use your best judgement and research here and remember that situation and landing spot matters a lot, moreso for rookies than anyone else. Even for great players, it can also take time to get up to speed... Of course, by the same metric, there have been tons of amazing rookie season. SITUATION, SITUATION, SITUATION.</p>
 <p>Identify positive regression candidates early, because there is value to be had there. I think the Titans will be much more fantasy relevant in 2026. No one watched them on TV, but everyone knew they sucked. Those who did watch though, will see that Cam Ward is legit despite throwing to randoms most of the year with a terrible supporting cast and terrible coaching cast. They've added talent in free agency, and they have high picks to add more in the draft. The coaching situation has also improved drastically.</p>
 <p>Similarly, identify negative regression candidates. I was out on Saquon (and by and large, the Eagles) in 2025. I didn't think Patullo was a good coordinator (lol, was right about that one), but also Saquon's workload was completely unsustainable. I didn't draft him anywhere. And while I do believe in the talent of both AJ Brown and Devonta Smith, I was worried it would be too boom or bust in 2025. Largely right there as well. Another regression candidate for me in 2025 was the Lions. Brain drain and a hard schedule. Still produced good points, particularly Gibbs and St. Brown, but it wasn't necessarily a 'buy everyone you can' situation like the year or two prior. </p>
@@ -74,5 +104,8 @@
 <p>Similar thoughts for DST. Also, so much of fantasy is focused on offense, that defense really takes a back seat. There are certainly analysts that understand defenses well, but they are fewer and further between. Streaming D/ST against bad teams is fine most of the time, and like kickers, D/ST is not worth reaching on. </p>
 <p>ALSO, I feel like the defensive scoring changes drastically between leagues and more and more leagues are axing it all together so... YMMV.</p>
 </div>
+<script>
+  function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
+</script>
 </body>
 </html>
