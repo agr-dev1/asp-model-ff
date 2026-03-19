@@ -320,6 +320,9 @@ function openModal(vals) {
     : `<p class="modal-no-notes">No notes yet.</p>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
+
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
   
 </script>
 </body>
