@@ -297,19 +297,19 @@ function openModal(vals) {
   document.getElementById('modal-pos').textContent = '2026 Season';
   document.getElementById('modal-name').textContent = vals[0] || '-';
   document.getElementById('modal-stats').innerHTML = `
-    <div class="modal-stat">
-      <span class="modal-stat-label">Team</span>
-      <span class="modal-stat-value" style="color:${tc}">${vals[1] || '-'}</span>
-    </div>
-    <div class="modal-stat">
-      <span class="modal-stat-label">ASP v2</span>
-      <span class="modal-stat-value">${parseFloat(vals[2]).toFixed(2) || '-'}</span>
-    </div>
-    <div class="modal-stat">
-      <span class="modal-stat-label">Team</span>
-      <span class="modal-stat-value" style="color:#ffffff; white-space:pre-line; line-height:1.3">${TEAM_NAMES[vals[1].trim()] || vals[1] || '—'}</span>
-    </div>
-  `;
+  <div class="modal-stat">
+    <span class="modal-stat-label">Team</span>
+    <span class="modal-stat-value" style="color:#ffffff; white-space:pre-line; line-height:1.3">${TEAM_NAMES[(vals[1] || '').trim()] || vals[1] || '—'}</span>
+  </div>
+  <div class="modal-stat">
+    <span class="modal-stat-label">ASP v2</span>
+    <span class="modal-stat-value">${parseFloat(vals[2]).toFixed(2) || '—'}</span>
+  </div>
+  <div class="modal-stat">
+    <span class="modal-stat-label">Round Grade</span>
+    <span class="modal-stat-value">${vals[3] || '—'}</span>
+  </div>
+`;
   const notes = vals[4] ? vals[4].trim() : '';
   document.getElementById('modal-notes').innerHTML = notes
     ? `<p class="modal-notes">${notes}</p>`
