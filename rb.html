@@ -60,7 +60,22 @@
   .error-msg { padding: 4rem 2rem; text-align: center; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.8rem; }
   .sort-arrow { margin-left: 4px; opacity: 0.4; }
   th.sorted .sort-arrow { opacity: 1; }
-  @media (max-width: 600px) { nav { padding: 0 1rem; } .hero { padding: 2rem 1rem 1.5rem; } .controls { padding: 0.75rem 1rem; } .table-wrap { padding: 0 0 3rem; } .nav-links { display: none; } }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
+  .drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: #0a0a0a; border-left: 1px solid #2a2a2a; z-index: 200; transition: right 0.3s ease; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .drawer a { color: #888; text-decoration: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.75rem 0; border-bottom: 1px solid #1a1a1a; transition: color 0.15s; }
+  .drawer a:hover, .drawer a.active { color: #fff; }
+  .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; }
+  .drawer-open .drawer { right: 0; }
+  .drawer-open .drawer-overlay { display: block; }
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero { padding: 2rem 1rem 1.5rem; }
+    .controls { padding: 0.75rem 1rem; }
+    .table-wrap { padding: 0 0 3rem; }
+  }
 </style>
 </head>
 <body>
@@ -70,11 +85,26 @@
   <div class="nav-links">
     <a href="index.html">Overall</a>
     <a href="qb.html">QB</a>
-    <a href="rb.html" class="active">RB</a>
+    <a href="rb.html">RB</a>
     <a href="wr.html">WR</a>
     <a href="te.html">TE</a>
     <a href="k.html">K</a>
-    <a href="dst.html">DST</a>
+    <a href="dst.html" class="active">DST</a>
+    <a href="about.html">About ASP</a>
+    <a href="draft-notes.html">Draft Notes</a>
+  </div>
+  <button class="hamburger" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div class="drawer">
+    <a href="index.html">Overall</a>
+    <a href="qb.html">QB</a>
+    <a href="rb.html">RB</a>
+    <a href="wr.html">WR</a>
+    <a href="te.html">TE</a>
+    <a href="k.html">K</a>
+    <a href="dst.html" class="active">DST</a>
     <a href="about.html">About ASP</a>
     <a href="draft-notes.html">Draft Notes</a>
   </div>
@@ -83,7 +113,7 @@
 <div class="hero">
   <div class="hero-left">
     <div class="pos-badge">2026 Season · ASP Model</div>
-    <h1>RB<br>Rankings</h1>
+    <h1>Running Back<br>Rankings</h1>
     <div class="hero-meta">Currently my favorite position group. It is what it is.</div>
   </div>
   <div class="hero-right">
@@ -221,6 +251,7 @@ document.querySelectorAll('th[data-col]').forEach(th => {
 });
 
 loadData();
+  function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
 </script>
 </body>
 </html>
