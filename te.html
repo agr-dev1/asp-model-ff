@@ -68,6 +68,19 @@
   .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; }
   .drawer-open .drawer { right: 0; }
   .drawer-open .drawer-overlay { display: block; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #141414; border: 1px solid #3a3a3a; border-radius: 8px; padding: 2rem; max-width: 480px; width: 100%; position: relative; animation: fadeIn 0.2s ease; }
+  .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: #888; font-size: 1.2rem; cursor: pointer; line-height: 1; }
+  .modal-close:hover { color: #fff; }
+  .modal-pos { font-family: 'Bebas Neue', sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; color: #888; margin-bottom: 0.25rem; }
+  .modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: #fff; line-height: 1; margin-bottom: 1.25rem; }
+  .modal-stats { display: flex; gap: 1.5rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid #2a2a2a; }
+  .modal-stat { display: flex; flex-direction: column; gap: 0.25rem; }
+  .modal-stat-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #666; }
+  .modal-stat-value { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 500; color: #fff; }
+  .modal-notes { font-size: 0.88rem; line-height: 1.7; color: #bbb; }
+  .modal-no-notes { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: #555; font-style: italic; }
   @media (max-width: 600px) {
     nav { padding: 0 1rem; }
     .nav-links { display: none; }
@@ -150,6 +163,16 @@
   <div class="error-msg" id="error-msg" style="display:none">Unable to load rankings. Please try refreshing.</div>
 </div>
 
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-pos" id="modal-pos"></div>
+    <div class="modal-name" id="modal-name"></div>
+    <div class="modal-stats" id="modal-stats"></div>
+    <div id="modal-notes"></div>
+  </div>
+</div>
+
 <script>
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZMZBUZScwDM3nmNX2OtFPbQ1Oe72qAsC2uisQG5TA2nb40jkvIcaiiIEM-EnLx_WGNPl/pub?gid=2144028764&single=true&output=csv';
 
@@ -210,6 +233,8 @@ function renderTable(rows) {
   tbody.innerHTML = '';
   rows.forEach((vals, i) => {
     const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.addEventListener('click', () => openModal(vals));
     tr.className = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
     tr.style.animationDelay = Math.min(i * 0.02, 0.5) + 's';
     const asp = parseFloat(vals[2]);
@@ -252,6 +277,35 @@ document.querySelectorAll('th[data-col]').forEach(th => {
 
 loadData();
   function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
+
+function openModal(vals) {
+  const tc = teamColor((vals[1] || '').trim());
+  document.getElementById('modal-pos').textContent = '2026 Season';
+  document.getElementById('modal-name').textContent = vals[0] || '—';
+  document.getElementById('modal-stats').innerHTML = `
+    <div class="modal-stat">
+      <span class="modal-stat-label">Team</span>
+      <span class="modal-stat-value" style="color:${tc}">${vals[1] || '—'}</span>
+    </div>
+    <div class="modal-stat">
+      <span class="modal-stat-label">ASP v2</span>
+      <span class="modal-stat-value">${parseFloat(vals[2]).toFixed(2) || '—'}</span>
+    </div>
+    <div class="modal-stat">
+      <span class="modal-stat-label">Round Grade</span>
+      <span class="modal-stat-value">${vals[3] || '—'}</span>
+    </div>
+  `;
+  const notes = vals[4] ? vals[4].trim() : '';
+  document.getElementById('modal-notes').innerHTML = notes
+    ? `<p class="modal-notes">${notes}</p>`
+    : `<p class="modal-no-notes">No notes yet.</p>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+  
 </script>
 </body>
 </html>
