@@ -382,9 +382,15 @@ async function startDraft() {
     const kRows = parseCSV(kText).slice(1).filter(r => r[0] && r[0].trim());
     const dstRows = parseCSV(dstText).slice(1).filter(r => r[0] && r[0].trim());
 
+    const roundGradeMap = {};
     [parseCSV(qbText), parseCSV(rbText), parseCSV(wrText), parseCSV(teText)].forEach(rows => {
       rows.slice(1).forEach(r => {
-        if (r[0] && r[4]) notesMap[r[0].trim()] = r[4];
+        if (r[0]) {
+          if (r[4]) notesMap[r[0].trim()] = r[4];
+          if (r[3]) roundGradeMap[r[0].trim()] = parseFloat(r[3]);
+    }
+  });
+});
       });
     });
     kRows.forEach(r => { if (r[0] && r[3]) notesMap[r[0].trim()] = r[3]; });
@@ -393,7 +399,7 @@ async function startDraft() {
     allPlayers = [
       ...overallRows.map((r, i) => ({
         id: 'o'+i, name: r[0], team: (r[1]||'').trim(), pos: r[2],
-        asp: parseFloat(r[3]) || 0, roundGrade: parseFloat(r[4]) || null
+        asp: parseFloat(r[3]) || 0, roundGrade: roundGradeMap[r[0].trim()] || null
       })),
       ...kRows.map((r, i) => ({
         id: 'k'+i, name: r[0], team: (r[1]||'').trim(), pos: 'K',
