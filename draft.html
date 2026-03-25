@@ -100,13 +100,13 @@
     .my-btn { background: #1a2e1a; border: 1px solid #2a5a2a; color: #6acc6a; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.65rem; cursor: pointer; font-family: 'DM Mono', monospace; }
     .my-btn:hover { background: #2a4a2a; }
 
-    .my-roster-panel { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; background: #080808; }
+    .my-roster-panel { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; background: #080808; }
     .roster-list { flex: 1; overflow-y: auto; padding: 0.5rem; }
     .roster-slot { padding: 0.5rem 0.65rem; border-radius: 4px; margin-bottom: 0.35rem; border: 1px solid #222; background: #111; cursor: pointer; transition: background 0.1s; }
     .roster-slot:hover { background: #1a1a1a; }
     .roster-slot.empty-slot { cursor: default; }
     .roster-slot.empty-slot:hover { background: #111; }
-    .slot-label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #666; font-family: 'DM Mono', monospace; margin-bottom: 0.15rem; }
+    .slot-label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #bbbbbb; font-family: 'DM Mono', monospace; margin-bottom: 0.15rem; }
     .slot-player { font-size: 0.78rem; font-weight: 500; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .slot-player.empty { color: #333; font-style: italic; font-size: 0.72rem; }
     .slot-sub { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #dddddd; }
@@ -189,7 +189,7 @@
 <div id="setup-screen" class="setup-screen">
   <div class="pos-badge">2026 Season - ASP Model</div>
   <h1>Draft<br>Tool</h1>
-  <p class="sub">Set your league settings, then mark players as drafted or yours as the draft unfolds.</p>
+  <p class="sub">Input your league settings, then mark players as drafted or yours as the draft unfolds. Try to keep up!</p>
   <div class="settings-grid">
     <div class="setting-row"><label>Your Draft Position</label><input type="number" id="draft-pos" min="1" max="20" value="5"></div>
     <div class="setting-row"><label>League Size</label><input type="number" id="league-size" min="8" max="16" value="12"></div>
@@ -201,6 +201,13 @@
     <div class="setting-row"><label>K Slots</label><input type="number" id="slot-k" min="0" max="2" value="1"></div>
     <div class="setting-row"><label>DST Slots</label><input type="number" id="slot-dst" min="0" max="2" value="1"></div>
     <div class="setting-row"><label>Bench Spots</label><input type="number" id="slot-bench" min="0" max="10" value="6"></div>
+    <div class="setting-row">
+      <label>Draft Type</label>
+      <select id="draft-type" style="background:#181818; border:1px solid #3a3a3a; color:#f0f0f0; padding:0.5rem 0.75rem; border-radius:4px; font-family:'DM Mono',monospace; font-size:0.85rem; outline:none;">
+        <option value="snake">Snake</option>
+        <option value="straight">Straight</option>
+      </select>
+    </div>
   </div>
   <button class="start-btn" onclick="startDraft()">Start Draft Board</button>
 </div>
@@ -236,13 +243,6 @@
     </div>
     <div class="my-roster-panel">
       <div class="panel-header"><span class="panel-label">My Roster</span></div>
-        <div style="display:flex; align-items:center; padding: 0.3rem 1rem; gap:0.75rem; border-bottom: 1px solid #222; background:#0a0a0a;">
-          <span style="width:28px; font-family:'DM Mono',monospace; font-size:0.6rem; color:#555; text-align:right; flex-shrink:0;">#</span>
-          <span style="flex:0 0 180px; font-family:'DM Mono',monospace; font-size:0.6rem; color:#555; letter-spacing:0.1em; text-transform:uppercase;">Player</span>
-          <span style="width:52px; font-family:'DM Mono',monospace; font-size:0.6rem; color:#555; letter-spacing:0.1em; text-transform:uppercase; text-align:center;">Team</span>
-          <span style="width:55px; font-family:'DM Mono',monospace; font-size:0.6rem; color:#555; letter-spacing:0.1em; text-transform:uppercase; text-align:right;">ASP</span>
-          <span style="width:110px; font-family:'DM Mono',monospace; font-size:0.6rem; color:#555; text-align:right;"></span>
-        </div>
       <div class="roster-list" id="roster-list"></div>
     </div>
   </div>
@@ -357,6 +357,7 @@ function totalRosterSize(s) {
 async function startDraft() {
   settings = {
     pos: parseInt(document.getElementById('draft-pos').value),
+    draftType: document.getElementById('draft-type').value,
     size: parseInt(document.getElementById('league-size').value),
     slots: {
       QB: parseInt(document.getElementById('slot-qb').value),
@@ -581,6 +582,25 @@ function updateHeader() {
     const need = f < s[pos];
     return `<span class="slot-badge${need ? ' need' : ''}">${pos} ${f}/${s[pos]}</span>`;
   }).join('');
+  const totalRounds = totalRosterSize(settings.slots);
+const myPickNums = getMyPickNumbers(settings.pos, settings.size, totalRounds, settings.draftType);
+const nextMyPick = myPickNums.find(n => n >= pickNumber);
+const picksAway = nextMyPick ? nextMyPick - pickNumber : null;
+
+const counter = document.getElementById('pick-counter');
+if (picksAway === 0) {
+  counter.style.color = '#6acc6a';
+  counter.textContent = 'YOUR PICK - ' + pickNumToRoundStr(pickNumber, settings.size);
+} else if (picksAway === 1) {
+  counter.style.color = '#e0cc88';
+  counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size) + ' (on deck)';
+} else if (picksAway <= 3) {
+  counter.style.color = '#aaa';
+  counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size) + ' (' + picksAway + ' away)';
+} else {
+  counter.style.color = '#aaa';
+  counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size);
+}
 }
 
 function showEndScreen() {
@@ -638,10 +658,10 @@ function showEndScreen() {
   document.getElementById('picks-tbody').innerHTML = pickScores.map(({ p, pickedAt, valueLabel, valueClass }) => {
     const roundStr = pickNumToRoundStr(pickedAt, s.size);
     return `<tr>
-      <td>${roundStr}</td>
+      <td>${Math.ceil(pickedAt / s.size)}</td>
       <td>${p.name}</td>
       <td>${p.pos}</td>
-      <td>${p.roundGrade || 'N/A'}</td>
+      <td>${p.roundGrade ? formatRoundGrade(p.roundGrade) : 'N/A'}</td>
       <td>${pickedAt} (${roundStr})</td>
       <td><span class="pick-value ${valueClass}">${valueLabel}</span></td>
     </tr>`;
@@ -705,6 +725,28 @@ function openModal(id) {
 function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
 function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
 function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
+
+function formatRoundGrade(rg) {
+  const parts = rg.toString().split('.');
+  const round = parts[0];
+  const pick = parts[1] ? parseInt(parts[1]) : 1;
+  return round + '.' + pick;
+}
+
+function getMyPickNumbers(draftPos, leagueSize, totalRounds, draftType) {
+  const picks = [];
+  for (let round = 1; round <= totalRounds; round++) {
+    let pickInRound;
+    if (draftType === 'snake') {
+      pickInRound = round % 2 === 1 ? draftPos : (leagueSize - draftPos + 1);
+    } else {
+      pickInRound = draftPos;
+    }
+    picks.push((round - 1) * leagueSize + pickInRound);
+  }
+  return picks;
+}
+  
 </script>
 </body>
 </html>
