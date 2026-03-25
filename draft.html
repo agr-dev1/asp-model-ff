@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QEQFCL7ZJY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QEQFCL7ZJY');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draft Tool [BETA] - ASP Model FF</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a; --surface: #181818; --border: #2a2a2a; --border-bright: #3a3a3a;
+      --text: #f0f0f0; --muted: #888888; --accent: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; border-bottom: 1px solid var(--border); background: #080808; position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
+    .nav-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; }
+    .nav-links { display: flex; gap: 0.25rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.75rem; border-radius: 4px; transition: color 0.15s, background 0.15s; }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a.active { color: var(--accent); background: var(--surface); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
+    .drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: #0a0a0a; border-left: 1px solid #2a2a2a; z-index: 200; transition: right 0.3s ease; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .drawer a { color: #888; text-decoration: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.75rem 0; border-bottom: 1px solid #1a1a1a; transition: color 0.15s; }
+    .drawer a:hover, .drawer a.active { color: #fff; }
+    .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; }
+    .drawer-open .drawer { right: 0; }
+    .drawer-open .drawer-overlay { display: block; }
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* SETUP SCREEN */
+    .setup-screen { padding: 3rem 2rem 4rem; max-width: 600px; margin: 0 auto; width: 100%; }
+    .setup-hero { margin-bottom: 2rem; }
+    .pos-badge { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.5rem; }
+    .setup-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.04em; line-height: 0.9; color: var(--accent); }
+    .setup-hero p { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #aaa; margin-top: 1rem; }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .setting-row { display: flex; flex-direction: column; gap: 0.4rem; }
+    .setting-row label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: #888; font-family: 'DM Mono', monospace; }
+    .setting-row input { background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); padding: 0.5rem 0.75rem; border-radius: 4px; font-size: 0.85rem; width: 100%; outline: none; font-family: 'DM Mono', monospace; }
+    .setting-row input:focus { border-color: #666; }
+    .start-btn { background: #fff; color: #000; border: none; padding: 0.75rem 2rem; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 4px; cursor: pointer; width: 100%; font-family: 'Inter', sans-serif; }
+    .start-btn:hover { background: #e0e0e0; }
+
+    /* DRAFT SCREEN */
+    .draft-screen { display: none; flex: 1; flex-direction: column; min-height: 0; }
+    .draft-header { background: #080808; border-bottom: 1px solid #222; padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; flex-shrink: 0; }
+    .draft-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.1em; color: var(--accent); }
+    .pick-counter { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #888; }
+    .roster-summary { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-left: auto; }
+    .slot-badge { font-family: 'DM Mono', monospace; font-size: 0.65rem; padding: 0.2rem 0.45rem; border-radius: 3px; border: 1px solid #333; background: #181818; color: #666; }
+    .slot-badge.need { border-color: #666; color: #fff; background: #222; }
+    .reset-btn { background: none; border: 1px solid #333; color: #888; padding: 0.3rem 0.75rem; border-radius: 4px; font-size: 0.7rem; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; font-family: 'DM Mono', monospace; }
+    .reset-btn:hover { color: #fff; border-color: #666; }
+
+    .suggestions-bar { padding: 0.6rem 1.5rem; border-bottom: 1px solid #222; background: #0e0e0e; flex-shrink: 0; }
+    .sug-label { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #555; font-family: 'DM Mono', monospace; margin-bottom: 0.4rem; }
+    .sug-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .sug-pill { background: #1a2a1a; border: 1px solid #2a4a2a; color: #8acc8a; font-family: 'DM Mono', monospace; font-size: 0.68rem; padding: 0.2rem 0.6rem; border-radius: 3px; cursor: pointer; }
+    .sug-pill:hover { background: #2a4a2a; }
+    .sug-pill.urgent { background: #2a1a1a; border-color: #5a2a2a; color: #ca8a8a; }
+    .sug-pill.urgent:hover { background: #4a2a2a; }
+
+    .draft-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+
+    .available-panel { flex: 1; display: flex; flex-direction: column; border-right: 1px solid #222; min-width: 0; }
+    .panel-header { padding: 0.75rem 1rem; border-bottom: 1px solid #222; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; background: #0c0c0c; flex-shrink: 0; }
+    .panel-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: #888; font-family: 'DM Mono', monospace; }
+    .search-input { background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.78rem; outline: none; width: 150px; font-family: 'DM Mono', monospace; }
+    .search-input:focus { border-color: #666; }
+    .filter-btns { display: flex; gap: 0.25rem; margin-left: auto; flex-wrap: wrap; }
+    .filter-btn { background: var(--surface); border: 1px solid var(--border-bright); color: #888; padding: 0.25rem 0.5rem; border-radius: 3px; font-size: 0.65rem; font-weight: 600; cursor: pointer; font-family: 'DM Mono', monospace; }
+    .filter-btn:hover { color: #fff; border-color: #555; }
+    .filter-btn.active { color: #fff; border-color: #fff; background: #222; }
+
+    .player-list { flex: 1; overflow-y: auto; }
+    .player-row { display: flex; align-items: center; padding: 0.6rem 1rem; border-bottom: 1px solid #1a1a1a; cursor: default; gap: 0.75rem; transition: background 0.1s; }
+    .player-row:not(.drafted):hover { background: #161616; }
+    .player-row.drafted { opacity: 0.25; }
+    .player-rank { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #555; width: 28px; text-align: right; flex-shrink: 0; }
+    .player-name-cell { flex: 1; min-width: 0; }
+    .player-name-text { font-size: 0.85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--accent); }
+    .player-pos-text { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #888; }
+    .team-tag { font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.4rem; border-radius: 3px; border: 1px solid #333; background: #1e1e1e; flex-shrink: 0; }
+    .asp-val { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: #fff; width: 58px; text-align: right; flex-shrink: 0; }
+    .action-btns { display: flex; gap: 0.4rem; flex-shrink: 0; }
+    .draft-btn { background: #222; border: 1px solid #444; color: #ccc; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.65rem; cursor: pointer; font-family: 'DM Mono', monospace; }
+    .draft-btn:hover { background: #444; color: #fff; }
+    .my-btn { background: #1a2e1a; border: 1px solid #2a5a2a; color: #6acc6a; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.65rem; cursor: pointer; font-family: 'DM Mono', monospace; }
+    .my-btn:hover { background: #2a4a2a; }
+    .off-board { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #333; }
+
+    .my-roster-panel { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; background: #080808; }
+    .roster-list { flex: 1; overflow-y: auto; padding: 0.5rem; }
+    .roster-slot { padding: 0.5rem 0.65rem; border-radius: 4px; margin-bottom: 0.35rem; border: 1px solid #222; background: #111; }
+    .slot-label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #555; font-family: 'DM Mono', monospace; margin-bottom: 0.15rem; }
+    .slot-player { font-size: 0.78rem; font-weight: 500; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .slot-player.empty { color: #333; font-style: italic; font-size: 0.72rem; }
+    .slot-sub { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #666; }
+
+    .empty-state { padding: 3rem 1rem; text-align: center; color: #444; font-family: 'DM Mono', monospace; font-size: 0.78rem; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">ASP Model FF</a>
+  <div class="nav-links">
+    <a href="index.html">Overall</a>
+    <a href="qb.html">QB</a>
+    <a href="rb.html">RB</a>
+    <a href="wr.html">WR</a>
+    <a href="te.html">TE</a>
+    <a href="k.html">K</a>
+    <a href="dst.html">DST</a>
+    <a href="about.html">About ASP</a>
+    <a href="draft-notes.html">Draft Notes</a>
+    <a href="draft.html" class="active">Draft Tool</a>
+  </div>
+  <button class="hamburger" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div class="drawer">
+    <a href="index.html">Overall</a>
+    <a href="qb.html">QB</a>
+    <a href="rb.html">RB</a>
+    <a href="wr.html">WR</a>
+    <a href="te.html">TE</a>
+    <a href="k.html">K</a>
+    <a href="dst.html">DST</a>
+    <a href="about.html">About ASP</a>
+    <a href="draft-notes.html">Draft Notes</a>
+    <a href="draft.html" class="active">Draft Tool</a>
+  </div>
+</nav>
+
+<!-- SETUP SCREEN -->
+<div id="setup-screen" class="setup-screen">
+  <div class="setup-hero">
+    <div class="pos-badge">2026 Season - ASP Model</div>
+    <h1>Draft<br>Tool</h1>
+    <p>Set your league settings, then mark players as drafted or yours as the draft unfolds.</p>
+  </div>
+  <div class="settings-grid">
+    <div class="setting-row">
+      <label>Your Draft Position</label>
+      <input type="number" id="draft-pos" min="1" max="20" value="5">
+    </div>
+    <div class="setting-row">
+      <label>League Size</label>
+      <input type="number" id="league-size" min="8" max="16" value="12">
+    </div>
+    <div class="setting-row">
+      <label>QB Slots</label>
+      <input type="number" id="slot-qb" min="1" max="3" value="1">
+    </div>
+    <div class="setting-row">
+      <label>RB Slots</label>
+      <input type="number" id="slot-rb" min="1" max="4" value="2">
+    </div>
+    <div class="setting-row">
+      <label>WR Slots</label>
+      <input type="number" id="slot-wr" min="1" max="4" value="2">
+    </div>
+    <div class="setting-row">
+      <label>TE Slots</label>
+      <input type="number" id="slot-te" min="1" max="2" value="1">
+    </div>
+    <div class="setting-row">
+      <label>FLEX Slots</label>
+      <input type="number" id="slot-flex" min="0" max="3" value="1">
+    </div>
+    <div class="setting-row">
+      <label>K Slots</label>
+      <input type="number" id="slot-k" min="0" max="2" value="1">
+    </div>
+    <div class="setting-row">
+      <label>DST Slots</label>
+      <input type="number" id="slot-dst" min="0" max="2" value="1">
+    </div>
+    <div class="setting-row">
+      <label>Bench Spots</label>
+      <input type="number" id="slot-bench" min="0" max="10" value="6">
+    </div>
+  </div>
+  <button class="start-btn" onclick="startDraft()">Start Draft Board</button>
+</div>
+
+<!-- DRAFT SCREEN -->
+<div id="draft-screen" class="draft-screen">
+  <div class="draft-header">
+    <span class="draft-title">ASP Draft Board</span>
+    <span class="pick-counter" id="pick-counter">Pick 1</span>
+    <div class="roster-summary" id="roster-summary"></div>
+    <button class="reset-btn" onclick="resetDraft()">Reset</button>
+  </div>
+
+  <div class="suggestions-bar">
+    <div class="sug-label">Suggested picks - best available by need + ASP</div>
+    <div class="sug-pills" id="suggestions"></div>
+  </div>
+
+  <div class="draft-body">
+    <div class="available-panel">
+      <div class="panel-header">
+        <span class="panel-label">Available Players</span>
+        <input class="search-input" type="text" id="search" placeholder="Search..." oninput="renderAvailable()">
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="setFilter('ALL',this)">ALL</button>
+          <button class="filter-btn" onclick="setFilter('QB',this)">QB</button>
+          <button class="filter-btn" onclick="setFilter('RB',this)">RB</button>
+          <button class="filter-btn" onclick="setFilter('WR',this)">WR</button>
+          <button class="filter-btn" onclick="setFilter('TE',this)">TE</button>
+          <button class="filter-btn" onclick="setFilter('K',this)">K</button>
+          <button class="filter-btn" onclick="setFilter('DST',this)">DST</button>
+        </div>
+      </div>
+      <div class="player-list" id="player-list"></div>
+    </div>
+
+    <div class="my-roster-panel">
+      <div class="panel-header">
+        <span class="panel-label">My Roster</span>
+      </div>
+      <div class="roster-list" id="roster-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const URLS = {
+  overall: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZMZBUZScwDM3nmNX2OtFPbQ1Oe72qAsC2uisQG5TA2nb40jkvIcaiiIEM-EnLx_WGNPl/pub?gid=255609940&single=true&output=csv',
+  k: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZMZBUZScwDM3nmNX2OtFPbQ1Oe72qAsC2uisQG5TA2nb40jkvIcaiiIEM-EnLx_WGNPl/pub?gid=550233438&single=true&output=csv',
+  dst: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZMZBUZScwDM3nmNX2OtFPbQ1Oe72qAsC2uisQG5TA2nb40jkvIcaiiIEM-EnLx_WGNPl/pub?gid=2100097516&single=true&output=csv',
+};
+
+const TEAM_COLORS = {
+  ARI:'#97233f',ATL:'#a71930',BAL:'#241773',BUF:'#00338d',CAR:'#0085ca',
+  CHI:'#c83803',CIN:'#fb4f14',CLE:'#ff3c00',DAL:'#003594',DEN:'#fb4f14',
+  DET:'#0076b6',GB:'#203731',HOU:'#03202f',IND:'#002c5f',JAX:'#006778',
+  KC:'#e31837',LAC:'#0080c6',LAR:'#003594',LV:'#a5acaf',MIA:'#008e97',
+  MIN:'#4f2683',NE:'#c60c30',NO:'#d3bc8d',NYG:'#0b2265',NYJ:'#125740',
+  PHI:'#004c54',PIT:'#ffb612',SEA:'#69be28',SF:'#aa0000',TB:'#d50a0a',
+  TEN:'#4b92db',WSH:'#773141',
+};
+
+let allPlayers = [];
+let draftedIds = new Set();
+let myPicks = [];
+let pickNumber = 1;
+let settings = {};
+let posFilter = 'ALL';
+
+function parseCSV(text) {
+  return text.trim().split('\n').map(line => {
+    const cols = []; let cur = ''; let inQ = false;
+    for (const c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur.trim()); return cols;
+  });
+}
+
+async function startDraft() {
+  settings = {
+    pos: parseInt(document.getElementById('draft-pos').value),
+    size: parseInt(document.getElementById('league-size').value),
+    slots: {
+      QB: parseInt(document.getElementById('slot-qb').value),
+      RB: parseInt(document.getElementById('slot-rb').value),
+      WR: parseInt(document.getElementById('slot-wr').value),
+      TE: parseInt(document.getElementById('slot-te').value),
+      FLEX: parseInt(document.getElementById('slot-flex').value),
+      K: parseInt(document.getElementById('slot-k').value),
+      DST: parseInt(document.getElementById('slot-dst').value),
+      BENCH: parseInt(document.getElementById('slot-bench').value),
+    }
+  };
+
+  document.getElementById('setup-screen').style.display = 'none';
+  const ds = document.getElementById('draft-screen');
+  ds.style.display = 'flex';
+  ds.style.height = 'calc(100vh - 56px)';
+
+  document.getElementById('player-list').innerHTML = '<div class="empty-state">Loading players...</div>';
+
+  try {
+    const [overallRes, kRes, dstRes] = await Promise.all([
+      fetch(URLS.overall), fetch(URLS.k), fetch(URLS.dst)
+    ]);
+    const [overallText, kText, dstText] = await Promise.all([
+      overallRes.text(), kRes.text(), dstRes.text()
+    ]);
+
+    const overallRows = parseCSV(overallText).slice(1).filter(r => r[0] && r[0].trim());
+    const kRows = parseCSV(kText).slice(1).filter(r => r[0] && r[0].trim());
+    const dstRows = parseCSV(dstText).slice(1).filter(r => r[0] && r[0].trim());
+
+    allPlayers = [
+      ...overallRows.map((r, i) => ({ id: 'o'+i, name: r[0], team: (r[1]||'').trim(), pos: r[2], asp: parseFloat(r[3]) || 0 })),
+      ...kRows.map((r, i) => ({ id: 'k'+i, name: r[0], team: (r[1]||'').trim(), pos: 'K', asp: parseFloat(r[2]) || 0 })),
+      ...dstRows.map((r, i) => ({ id: 'd'+i, name: r[0], team: (r[1]||'').trim(), pos: 'DST', asp: parseFloat(r[2]) || 0 })),
+    ];
+
+    allPlayers.sort((a, b) => b.asp - a.asp);
+    renderAll();
+  } catch(e) {
+    document.getElementById('player-list').innerHTML = '<div class="empty-state">Failed to load players. Please refresh.</div>';
+  }
+}
+
+function renderAll() {
+  renderAvailable();
+  renderRoster();
+  renderSuggestions();
+  updateHeader();
+}
+
+function renderAvailable() {
+  const q = (document.getElementById('search').value || '').toLowerCase();
+  const list = document.getElementById('player-list');
+
+  const filtered = allPlayers.filter(p => {
+    const posMatch = posFilter === 'ALL' || p.pos === posFilter || p.pos.startsWith(posFilter);
+    const searchMatch = !q || p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q);
+    return posMatch && searchMatch;
+  });
+
+  if (!filtered.length) { list.innerHTML = '<div class="empty-state">No players found</div>'; return; }
+
+  list.innerHTML = filtered.map(p => {
+    const drafted = draftedIds.has(p.id);
+    const tc = TEAM_COLORS[p.team] || '#aaaaaa';
+    const globalRank = allPlayers.indexOf(p) + 1;
+    return `<div class="player-row${drafted ? ' drafted' : ''}">
+      <span class="player-rank">${globalRank}</span>
+      <div class="player-name-cell">
+        <div class="player-name-text">${p.name}</div>
+        <div class="player-pos-text">${p.pos}</div>
+      </div>
+      <span class="team-tag" style="color:${tc}">${p.team || '-'}</span>
+      <span class="asp-val">${p.asp.toFixed(1)}</span>
+      ${!drafted
+        ? `<div class="action-btns">
+            <button class="my-btn" onclick="markMine('${p.id}')">Mine</button>
+            <button class="draft-btn" onclick="markDrafted('${p.id}')">Drafted</button>
+          </div>`
+        : `<span class="off-board">off board</span>`
+      }
+    </div>`;
+  }).join('');
+}
+
+function markDrafted(id) {
+  draftedIds.add(id);
+  pickNumber++;
+  renderAll();
+}
+
+function markMine(id) {
+  const p = allPlayers.find(x => x.id === id);
+  if (!p) return;
+  draftedIds.add(id);
+  myPicks.push(p);
+  pickNumber++;
+  renderAll();
+}
+
+function renderRoster() {
+  const s = settings.slots;
+  const filled = { QB:[], RB:[], WR:[], TE:[], K:[], DST:[], FLEX:[], BENCH:[] };
+
+  for (const p of myPicks) {
+    const pos = p.pos.startsWith('R-') ? p.pos.replace('R-','') : p.pos;
+    if (pos === 'QB' && filled.QB.length < s.QB) filled.QB.push(p);
+    else if (pos === 'RB' && filled.RB.length < s.RB) filled.RB.push(p);
+    else if (pos === 'WR' && filled.WR.length < s.WR) filled.WR.push(p);
+    else if (pos === 'TE' && filled.TE.length < s.TE) filled.TE.push(p);
+    else if (pos === 'K' && filled.K.length < s.K) filled.K.push(p);
+    else if (pos === 'DST' && filled.DST.length < s.DST) filled.DST.push(p);
+    else if (['RB','WR','TE'].includes(pos) && filled.FLEX.length < s.FLEX) filled.FLEX.push(p);
+    else filled.BENCH.push(p);
+  }
+
+  const slotDefs = [
+    ...Array(s.QB).fill(0).map((_,i) => ({ label:'QB', player: filled.QB[i] })),
+    ...Array(s.RB).fill(0).map((_,i) => ({ label:'RB', player: filled.RB[i] })),
+    ...Array(s.WR).fill(0).map((_,i) => ({ label:'WR', player: filled.WR[i] })),
+    ...Array(s.TE).fill(0).map((_,i) => ({ label:'TE', player: filled.TE[i] })),
+    ...Array(s.FLEX).fill(0).map((_,i) => ({ label:'FLEX', player: filled.FLEX[i] })),
+    ...Array(s.K).fill(0).map((_,i) => ({ label:'K', player: filled.K[i] })),
+    ...Array(s.DST).fill(0).map((_,i) => ({ label:'DST', player: filled.DST[i] })),
+    ...Array(s.BENCH).fill(0).map((_,i) => ({ label:'BENCH', player: filled.BENCH[i] })),
+  ];
+
+  document.getElementById('roster-list').innerHTML = slotDefs.map(sl => `
+    <div class="roster-slot">
+      <div class="slot-label">${sl.label}</div>
+      ${sl.player
+        ? `<div class="slot-player">${sl.player.name}</div><div class="slot-sub">${sl.player.pos} - ${sl.player.team}</div>`
+        : `<div class="slot-player empty">empty</div>`}
+    </div>
+  `).join('');
+}
+
+function renderSuggestions() {
+  const s = settings.slots;
+  const filled = { QB:0, RB:0, WR:0, TE:0, K:0, DST:0, FLEX:0 };
+
+  for (const p of myPicks) {
+    const pos = p.pos.startsWith('R-') ? p.pos.replace('R-','') : p.pos;
+    if (pos === 'QB' && filled.QB < s.QB) filled.QB++;
+    else if (pos === 'RB' && filled.RB < s.RB) filled.RB++;
+    else if (pos === 'WR' && filled.WR < s.WR) filled.WR++;
+    else if (pos === 'TE' && filled.TE < s.TE) filled.TE++;
+    else if (pos === 'K' && filled.K < s.K) filled.K++;
+    else if (pos === 'DST' && filled.DST < s.DST) filled.DST++;
+    else if (['RB','WR','TE'].includes(pos) && filled.FLEX < s.FLEX) filled.FLEX++;
+  }
+
+  const needs = [];
+  if (filled.QB < s.QB) needs.push({ pos:'QB', urgent: pickNumber > s.size * 2 });
+  if (filled.RB < s.RB) needs.push({ pos:'RB', urgent: filled.RB === 0 });
+  if (filled.WR < s.WR) needs.push({ pos:'WR', urgent: filled.WR === 0 });
+  if (filled.TE < s.TE) needs.push({ pos:'TE', urgent: pickNumber > s.size });
+  if (filled.FLEX < s.FLEX) needs.push({ pos:'FLEX', urgent: false });
+  if (filled.K < s.K) needs.push({ pos:'K', urgent: false });
+  if (filled.DST < s.DST) needs.push({ pos:'DST', urgent: false });
+
+  if (!needs.length) {
+    document.getElementById('suggestions').innerHTML = '<span style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#555">All starting slots filled - draft for depth</span>';
+    return;
+  }
+
+  const pills = needs.map(n => {
+    const search = n.pos === 'FLEX' ? ['RB','WR','TE'] : [n.pos];
+    const best = allPlayers.find(p => !draftedIds.has(p.id) && search.some(pos => p.pos === pos || p.pos.startsWith(pos)));
+    if (!best) return '';
+    return `<span class="sug-pill${n.urgent ? ' urgent' : ''}" onclick="highlightPlayer('${best.id}')">
+      ${n.pos}: ${best.name} (${best.asp.toFixed(1)})
+    </span>`;
+  }).filter(Boolean);
+
+  document.getElementById('suggestions').innerHTML = pills.join('') || '<span style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#555">Loading...</span>';
+}
+
+function highlightPlayer(id) {
+  const p = allPlayers.find(x => x.id === id);
+  if (!p) return;
+  posFilter = 'ALL';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent === 'ALL'));
+  document.getElementById('search').value = p.name;
+  renderAvailable();
+}
+
+function updateHeader() {
+  document.getElementById('pick-counter').textContent = 'Pick ' + pickNumber;
+  const s = settings.slots;
+  const filled = { QB:0, RB:0, WR:0, TE:0, K:0, DST:0 };
+  for (const p of myPicks) {
+    const pos = p.pos.startsWith('R-') ? p.pos.replace('R-','') : p.pos;
+    if (filled[pos] !== undefined && filled[pos] < s[pos]) filled[pos]++;
+  }
+  document.getElementById('roster-summary').innerHTML = ['QB','RB','WR','TE','K','DST'].map(pos => {
+    const f = filled[pos] || 0;
+    const need = f < s[pos];
+    return `<span class="slot-badge${need ? ' need' : ''}">${pos} ${f}/${s[pos]}</span>`;
+  }).join('');
+}
+
+function setFilter(pos, btn) {
+  posFilter = pos;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderAvailable();
+}
+
+function resetDraft() {
+  if (!confirm('Reset the entire draft board?')) return;
+  draftedIds = new Set();
+  myPicks = [];
+  pickNumber = 1;
+  document.getElementById('search').value = '';
+  posFilter = 'ALL';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent === 'ALL'));
+  renderAll();
+}
+
+function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
+</script>
+</body>
+</html>
