@@ -534,7 +534,8 @@ function renderRoster() {
 function renderSuggestions() {
   const s = settings.slots;
   const currentRound = Math.ceil(pickNumber / s.size);
-  const filled = { QB:0, RB:0, WR:0, TE:0, K:0, DST:0, FLEX:0 };
+  const filled = { QB:0, RB:0, WR:0, TE:0, K:0, DST:0, FLEX:0, BENCH:0 };
+
   for (const p of myPicks) {
     const pos = p.pos.startsWith('R-') ? p.pos.replace('R-','') : p.pos;
     if (pos === 'QB' && filled.QB < s.QB) filled.QB++;
@@ -544,29 +545,54 @@ function renderSuggestions() {
     else if (pos === 'K' && filled.K < s.K) filled.K++;
     else if (pos === 'DST' && filled.DST < s.DST) filled.DST++;
     else if (['RB','WR','TE'].includes(pos) && filled.FLEX < s.FLEX) filled.FLEX++;
+    else filled.BENCH++;
   }
+
+  const totalRB = myPicks.filter(p => p.pos === 'RB').length;
+  const totalWR = myPicks.filter(p => p.pos === 'WR').length;
+  const depthPos = totalRB <= totalWR ? 'RB' : 'WR';
+
   const needs = [];
+
+  // Starting slots not yet filled
   if (filled.QB < s.QB) needs.push({ pos:'QB', urgent: currentRound > 4 });
   if (filled.RB < s.RB) needs.push({ pos:'RB', urgent: filled.RB === 0 && currentRound > 1 });
   if (filled.WR < s.WR) needs.push({ pos:'WR', urgent: filled.WR === 0 && currentRound > 1 });
   if (filled.TE < s.TE) needs.push({ pos:'TE', urgent: currentRound > 5 });
   if (filled.FLEX < s.FLEX) needs.push({ pos:'FLEX', urgent: false });
+
+  // Always suggest depth at RB or WR - whichever you have less of
+  const alreadySuggestingDepthPos = needs.some(n => n.pos === depthPos || n.pos === 'FLEX');
+  if (!alreadySuggestingDepthPos) {
+    needs.push({ pos: depthPos, urgent: false, label: depthPos + ' Depth' });
+  }
+
+  // K and DST - suggest but lower priority, only if not already drafted
   if (filled.K < s.K) needs.push({ pos:'K', urgent: false });
   if (filled.DST < s.DST) needs.push({ pos:'DST', urgent: false });
 
+  // Late rounds - suggest QB depth if none on bench
+  const qbTotal = myPicks.filter(p => p.pos === 'QB').length;
+  if (currentRound > 8 && qbTotal < 2 && filled.QB >= s.QB) {
+    needs.push({ pos:'QB', urgent: false, label: 'QB Depth' });
+  }
+
   if (!needs.length) {
-    document.getElementById('suggestions').innerHTML = '<span style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#555">All starting slots filled - draft for depth</span>';
+    document.getElementById('suggestions').innerHTML = '<span style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#aaaaaa">Roster complete</span>';
     return;
   }
+
   const pills = needs.map(n => {
     const search = n.pos === 'FLEX' ? ['RB','WR','TE'] : [n.pos];
     const best = allPlayers.find(p => !draftedIds.has(p.id) && search.some(pos => p.pos === pos || p.pos.startsWith(pos)));
     if (!best) return '';
+    const displayLabel = n.label || n.pos;
     return `<span class="sug-pill${n.urgent ? ' urgent' : ''}" onclick="highlightPlayer('${best.id}')">
-      ${n.pos}: ${best.name} (${best.asp.toFixed(1)})
+      ${displayLabel}: ${best.name} (${best.asp.toFixed(1)})
     </span>`;
   }).filter(Boolean);
-  document.getElementById('suggestions').innerHTML = pills.join('') || '<span style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#555">No suggestions</span>';
+
+  document.getElementById('suggestions').innerHTML = pills.join('') || '<span style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#aaaaaa">No suggestions available</span>';
 }
 
 function updateHeader() {
