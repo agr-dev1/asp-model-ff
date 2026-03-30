@@ -49,8 +49,8 @@
     .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
     .setting-row { display: flex; flex-direction: column; gap: 0.4rem; }
     .setting-row label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: #888; font-family: 'DM Mono', monospace; }
-    .setting-row input { background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); padding: 0.5rem 0.75rem; border-radius: 4px; font-size: 0.85rem; width: 100%; outline: none; font-family: 'DM Mono', monospace; }
-    .setting-row input:focus { border-color: #666; }
+    .setting-row input, .setting-row select { background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); padding: 0.5rem 0.75rem; border-radius: 4px; font-size: 0.85rem; width: 100%; outline: none; font-family: 'DM Mono', monospace; }
+    .setting-row input:focus, .setting-row select:focus { border-color: #666; }
     .start-btn { background: #fff; color: #000; border: none; padding: 0.75rem 2rem; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 4px; cursor: pointer; width: 100%; font-family: 'Inter', sans-serif; }
     .start-btn:hover { background: #e0e0e0; }
 
@@ -65,6 +65,16 @@
     .reset-btn { background: none; border: 1px solid #333; color: #888; padding: 0.3rem 0.75rem; border-radius: 4px; font-size: 0.7rem; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; font-family: 'DM Mono', monospace; }
     .reset-btn:hover { color: #fff; border-color: #666; }
 
+    /* AUTOPICK TOGGLE */
+    .autopick-toggle { display: flex; align-items: center; gap: 0.5rem; }
+    .autopick-toggle label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: #888; cursor: pointer; }
+    .toggle-switch { position: relative; width: 36px; height: 20px; cursor: pointer; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: #333; border-radius: 20px; transition: 0.2s; border: 1px solid #444; }
+    .toggle-slider:before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; top: 2px; background: #888; border-radius: 50%; transition: 0.2s; }
+    .toggle-switch input:checked + .toggle-slider { background: #1a2e1a; border-color: #2a5a2a; }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(16px); background: #6acc6a; }
+
     .suggestions-bar { padding: 0.6rem 1.5rem; border-bottom: 1px solid #222; background: #0e0e0e; flex-shrink: 0; }
     .sug-label { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #aaaaaa; font-family: 'DM Mono', monospace; margin-bottom: 0.4rem; }
     .sug-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
@@ -73,8 +83,11 @@
     .sug-pill.urgent { background: #2a1a1a; border-color: #5a2a2a; color: #ca8a8a; }
     .sug-pill.urgent:hover { background: #4a2a2a; }
 
-    .draft-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+    /* CPU PICK ANNOUNCEMENT */
+    .cpu-announce { padding: 0.5rem 1.5rem; background: #0a1a0a; border-bottom: 1px solid #1a3a1a; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #6acc6a; display: none; flex-shrink: 0; }
+    .cpu-announce.visible { display: block; }
 
+    .draft-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
     .available-panel { flex: 1; display: flex; flex-direction: column; border-right: 1px solid #222; min-width: 0; }
     .panel-header { padding: 0.75rem 1rem; border-bottom: 1px solid #222; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; background: #0c0c0c; flex-shrink: 0; }
     .panel-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: #cccccc; font-family: 'DM Mono', monospace; }
@@ -88,11 +101,11 @@
     .player-list { flex: 1; overflow-y: auto; }
     .player-row { display: flex; align-items: center; padding: 0.6rem 1rem; border-bottom: 1px solid #1a1a1a; gap: 0.75rem; transition: background 0.1s; cursor: pointer; }
     .player-row:hover { background: #161616; }
-    .player-rank { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #555; width: 28px; flex-shrink: 0; }
+    .player-rank { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #555; width: 28px; flex-shrink: 0; text-align: right; }
     .player-name-cell { flex: 0 0 180px; min-width: 0; }
     .player-name-text { font-size: 0.85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--accent); }
     .player-pos-text { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #dddddd; }
-    .team-tag { font-family: 'DM Mono', monospace; font-size: 0.77rem; font-weight: 600; padding: 0.15rem 0.4rem; width:52px; text-align: center; border-radius: 3px; border: 1px solid #3a3a3a; background: #b0b0b0; flex-shrink: 0; }
+    .team-tag { font-family: 'DM Mono', monospace; font-size: 0.77rem; font-weight: 600; padding: 0.15rem 0.4rem; width: 52px; text-align: center; border-radius: 3px; border: 1px solid #3a3a3a; background: #b0b0b0; flex-shrink: 0; }
     .asp-val { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: #fff; width: 55px; text-align: right; flex-shrink: 0; }
     .action-btns { width: 110px; justify-content: flex-end; display: flex; gap: 0.4rem; flex-shrink: 0; }
     .draft-btn { background: #222; border: 1px solid #444; color: #ccc; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.65rem; cursor: pointer; font-family: 'DM Mono', monospace; }
@@ -106,7 +119,8 @@
     .roster-slot:hover { background: #1a1a1a; }
     .roster-slot.empty-slot { cursor: default; }
     .roster-slot.empty-slot:hover { background: #111; }
-    .slot-label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #bbbbbb; font-family: 'DM Mono', monospace; margin-bottom: 0.15rem; }
+    .slot-label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: #cccccc; font-family: 'DM Mono', monospace; margin-bottom: 0.15rem; }
+    .my-roster-panel .slot-label { color: #cccccc !important; }
     .slot-player { font-size: 0.78rem; font-weight: 500; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .slot-player.empty { color: #333; font-style: italic; font-size: 0.72rem; }
     .slot-sub { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #dddddd; }
@@ -203,9 +217,16 @@
     <div class="setting-row"><label>Bench Spots</label><input type="number" id="slot-bench" min="0" max="10" value="6"></div>
     <div class="setting-row">
       <label>Draft Type</label>
-      <select id="draft-type" style="background:#181818; border:1px solid #3a3a3a; color:#f0f0f0; padding:0.5rem 0.75rem; border-radius:4px; font-family:'DM Mono',monospace; font-size:0.85rem; outline:none;">
+      <select id="draft-type">
         <option value="snake">Snake</option>
         <option value="straight">Straight</option>
+      </select>
+    </div>
+    <div class="setting-row">
+      <label>Autopick (Practice Mode)</label>
+      <select id="autopick-mode">
+        <option value="off">Off - Manual draft</option>
+        <option value="on">On - CPU drafts other teams</option>
       </select>
     </div>
   </div>
@@ -218,8 +239,16 @@
     <span class="draft-title">ASP Draft Board</span>
     <span class="pick-counter" id="pick-counter">Pick 1 - 1.01</span>
     <div class="roster-summary" id="roster-summary"></div>
+    <div class="autopick-toggle">
+      <label for="autopick-live">Autopick</label>
+      <label class="toggle-switch">
+        <input type="checkbox" id="autopick-live" onchange="toggleAutopick()">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
     <button class="reset-btn" onclick="resetDraft()">Reset</button>
   </div>
+  <div class="cpu-announce" id="cpu-announce"></div>
   <div class="suggestions-bar">
     <div class="sug-label">Suggested picks - best available by need + ASP</div>
     <div class="sug-pills" id="suggestions"></div>
@@ -324,6 +353,11 @@ let myPicksAtRound = [];
 let pickNumber = 1;
 let settings = {};
 let posFilter = 'ALL';
+let autopickEnabled = false;
+let autopickTimeout = null;
+
+// CPU team state - tracks what each CPU team has drafted
+let cpuTeams = {};
 
 function parseCSV(text) {
   return text.trim().split('\n').map(line => {
@@ -354,6 +388,152 @@ function totalRosterSize(s) {
   return s.QB + s.RB + s.WR + s.TE + s.FLEX + s.K + s.DST + s.BENCH;
 }
 
+function formatRoundGrade(rg) {
+  const parts = rg.toString().split('.');
+  return parts[0] + '.' + parseInt(parts[1] || '1');
+}
+
+function getMyPickNumbers(draftPos, leagueSize, totalRounds, draftType) {
+  const picks = [];
+  for (let round = 1; round <= totalRounds; round++) {
+    let pickInRound;
+    if (draftType === 'snake') {
+      pickInRound = round % 2 === 1 ? draftPos : (leagueSize - draftPos + 1);
+    } else {
+      pickInRound = draftPos;
+    }
+    picks.push((round - 1) * leagueSize + pickInRound);
+  }
+  return picks;
+}
+
+function getPickOwner(pickNum, draftPos, leagueSize, draftType) {
+  const pickInRound = ((pickNum - 1) % leagueSize) + 1;
+  const round = Math.ceil(pickNum / leagueSize);
+  let ownerSlot;
+  if (draftType === 'snake') {
+    ownerSlot = round % 2 === 1 ? pickInRound : (leagueSize - pickInRound + 1);
+  } else {
+    ownerSlot = pickInRound;
+  }
+  return ownerSlot;
+}
+
+function cpuPickPlayer(teamSlot) {
+  const currentRound = Math.ceil(pickNumber / settings.size);
+  const teamDrafted = cpuTeams[teamSlot] || { QB:0, RB:0, WR:0, TE:0, K:0, DST:0, total:0 };
+  const s = settings.slots;
+
+  // Build positional need weights for CPU team based on round
+  let posWeights = [];
+
+  if (currentRound <= 3) {
+    posWeights = ['RB','RB','WR','WR','RB','WR','TE'];
+  } else if (currentRound <= 6) {
+    posWeights = ['RB','WR','RB','WR','TE','QB','RB','WR'];
+  } else if (currentRound <= 9) {
+    posWeights = ['RB','WR','QB','TE','RB','WR','RB','WR'];
+  } else if (currentRound <= 11) {
+    posWeights = ['RB','WR','QB','TE','RB','WR','DST','K'];
+  } else {
+    posWeights = ['RB','WR','QB','DST','K','TE','RB','WR'];
+  }
+
+  // Filter out positions already adequately filled
+  const totalSlots = totalRosterSize(s);
+  const remainingPicks = totalSlots - teamDrafted.total;
+
+  posWeights = posWeights.filter(pos => {
+    if (pos === 'K' && teamDrafted.K >= 1) return false;
+    if (pos === 'DST' && teamDrafted.DST >= 1) return false;
+    if (pos === 'QB' && teamDrafted.QB >= 2) return false;
+    return true;
+  });
+
+  if (!posWeights.length) posWeights = ['RB', 'WR'];
+
+  // Pick randomly from the weighted list
+  const targetPos = posWeights[Math.floor(Math.random() * posWeights.length)];
+
+  // Get top 10 available at that position, pick randomly from them
+  const available = allPlayers.filter(p => {
+    if (draftedIds.has(p.id)) return false;
+    if (targetPos === 'FLEX') return ['RB','WR','TE'].includes(p.pos);
+    return p.pos === targetPos;
+  }).slice(0, 10);
+
+  // If nothing available at that pos, fall back to top 10 overall
+  const pool = available.length > 0 ? available : allPlayers.filter(p => !draftedIds.has(p.id)).slice(0, 10);
+  if (!pool.length) return null;
+
+  // Weight toward top of pool (higher ASP = more likely) with some randomness
+  const weights = pool.map((_, i) => Math.max(1, 10 - i));
+  const totalWeight = weights.reduce((a, b) => a + b, 0);
+  let rand = Math.random() * totalWeight;
+  let chosen = pool[pool.length - 1];
+  for (let i = 0; i < pool.length; i++) {
+    rand -= weights[i];
+    if (rand <= 0) { chosen = pool[i]; break; }
+  }
+
+  return chosen;
+}
+
+function isMyPick(pickNum) {
+  return getPickOwner(pickNum, settings.pos, settings.size, settings.draftType) === settings.pos;
+}
+
+function scheduleNextCpuPick() {
+  if (!autopickEnabled) return;
+  if (isMyPick(pickNumber)) return;
+
+  const delay = 2000 + Math.random() * 3000; // 2-5 seconds per CPU pick
+  autopickTimeout = setTimeout(() => {
+    if (!autopickEnabled) return;
+    if (isMyPick(pickNumber)) return;
+
+    const teamSlot = getPickOwner(pickNumber, settings.pos, settings.size, settings.draftType);
+    const picked = cpuPickPlayer(teamSlot);
+    if (!picked) return;
+
+    // Update CPU team tracking
+    if (!cpuTeams[teamSlot]) cpuTeams[teamSlot] = { QB:0, RB:0, WR:0, TE:0, K:0, DST:0, total:0 };
+    const pos = picked.pos;
+    if (cpuTeams[teamSlot][pos] !== undefined) cpuTeams[teamSlot][pos]++;
+    cpuTeams[teamSlot].total++;
+
+    draftedIds.add(picked.id);
+    pickNumber++;
+
+    // Show announcement
+    const announce = document.getElementById('cpu-announce');
+    const roundStr = pickNumToRoundStr(pickNumber - 1, settings.size);
+    announce.textContent = 'Pick ' + (pickNumber - 1) + ' (' + roundStr + ') - Team ' + teamSlot + ' selects ' + picked.name + ' (' + picked.pos + ')';
+    announce.classList.add('visible');
+
+    renderAll();
+
+    // If next pick is mine, stop and clear announcement after a moment
+    if (isMyPick(pickNumber)) {
+      setTimeout(() => announce.classList.remove('visible'), 3000);
+      return;
+    }
+
+    // Otherwise schedule next CPU pick
+    scheduleNextCpuPick();
+  }, delay);
+}
+
+function toggleAutopick() {
+  autopickEnabled = document.getElementById('autopick-live').checked;
+  if (autopickEnabled && !isMyPick(pickNumber)) {
+    scheduleNextCpuPick();
+  } else if (!autopickEnabled && autopickTimeout) {
+    clearTimeout(autopickTimeout);
+    autopickTimeout = null;
+  }
+}
+
 async function startDraft() {
   settings = {
     pos: parseInt(document.getElementById('draft-pos').value),
@@ -370,6 +550,8 @@ async function startDraft() {
       BENCH: parseInt(document.getElementById('slot-bench').value),
     }
   };
+
+  const startAutopick = document.getElementById('autopick-mode').value === 'on';
 
   document.getElementById('setup-screen').style.display = 'none';
   const ds = document.getElementById('draft-screen');
@@ -397,9 +579,9 @@ async function startDraft() {
         if (r[0]) {
           if (r[4]) notesMap[r[0].trim()] = r[4];
           if (r[3]) roundGradeMap[r[0].trim()] = parseFloat(r[3]);
-    }
-  });
-});
+        }
+      });
+    });
     kRows.forEach(r => { if (r[0] && r[3]) notesMap[r[0].trim()] = r[3]; });
     dstRows.forEach(r => { if (r[0] && r[3]) notesMap[r[0].trim()] = r[3]; });
 
@@ -419,7 +601,19 @@ async function startDraft() {
     ];
 
     allPlayers.sort((a, b) => b.asp - a.asp);
+
+    if (startAutopick) {
+      autopickEnabled = true;
+      document.getElementById('autopick-live').checked = true;
+    }
+
     renderAll();
+
+    // If autopick on and first pick isn't ours, start CPU picks
+    if (autopickEnabled && !isMyPick(pickNumber)) {
+      scheduleNextCpuPick();
+    }
+
   } catch(e) {
     document.getElementById('player-list').innerHTML = '<div class="empty-state">Failed to load players. Please refresh.</div>';
   }
@@ -437,9 +631,7 @@ function renderAvailable() {
   const list = document.getElementById('player-list');
   const filtered = allPlayers.filter(p => {
     if (draftedIds.has(p.id)) return false;
-    // Hide K once one is drafted
     if (p.pos === 'K' && myPicks.some(m => m.pos === 'K')) return false;
-    // Hide DST once one is drafted
     if (p.pos === 'DST' && myPicks.some(m => m.pos === 'DST')) return false;
     const posMatch = posFilter === 'ALL' || p.pos === posFilter || p.pos.startsWith(posFilter);
     const searchMatch = !q || p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q);
@@ -455,7 +647,7 @@ function renderAvailable() {
       <span class="player-rank">${globalRank}</span>
       <div class="player-name-cell">
         <div class="player-name-text">${p.name}</div>
-        <div class="player-pos-text">${p.pos}${p.roundGrade ? ' - Rd ' + p.roundGrade : ''}</div>
+        <div class="player-pos-text">${p.pos}${p.roundGrade ? ' - Rd ' + formatRoundGrade(p.roundGrade) : ''}</div>
       </div>
       <span class="team-tag" style="color:${tc}">${p.team || '-'}</span>
       <span class="asp-val">${p.asp.toFixed(1)}</span>
@@ -468,33 +660,67 @@ function renderAvailable() {
 }
 
 function markDrafted(id) {
+  if (autopickEnabled && !isMyPick(pickNumber)) return;
   draftedIds.add(id);
   pickNumber++;
-  updatePickCounter();
+  document.getElementById('cpu-announce').classList.remove('visible');
   renderAll();
+  if (autopickEnabled && !isMyPick(pickNumber)) scheduleNextCpuPick();
 }
 
 function markMine(id) {
   const p = allPlayers.find(x => x.id === id);
   if (!p) return;
+  if (autopickEnabled && !isMyPick(pickNumber)) return;
   draftedIds.add(id);
   myPicks.push(p);
   myPicksAtRound.push(pickNumber);
   pickNumber++;
-  updatePickCounter();
+  document.getElementById('cpu-announce').classList.remove('visible');
 
   const s = settings.slots;
   const totalSlots = totalRosterSize(s);
   if (myPicks.length >= totalSlots) {
+    if (autopickTimeout) clearTimeout(autopickTimeout);
     showEndScreen();
     return;
   }
   renderAll();
+  if (autopickEnabled && !isMyPick(pickNumber)) scheduleNextCpuPick();
 }
 
-function updatePickCounter() {
-  const roundStr = pickNumToRoundStr(pickNumber, settings.size);
-  document.getElementById('pick-counter').textContent = 'Pick ' + pickNumber + ' - ' + roundStr;
+function updateHeader() {
+  const s = settings.slots;
+  const counts = { QB:0, RB:0, WR:0, TE:0, K:0, DST:0 };
+  for (const p of myPicks) {
+    const pos = p.pos.startsWith('R-') ? p.pos.replace('R-','') : p.pos;
+    if (counts[pos] !== undefined) counts[pos]++;
+  }
+  document.getElementById('roster-summary').innerHTML = ['QB','RB','WR','TE','K','DST'].map(pos => {
+    const f = counts[pos] || 0;
+    const need = f < s[pos];
+    return `<span class="slot-badge${need ? ' need' : ''}">${pos} ${f}/${s[pos]}</span>`;
+  }).join('');
+
+  const totalRounds = totalRosterSize(settings.slots);
+  const myPickNums = getMyPickNumbers(settings.pos, settings.size, totalRounds, settings.draftType);
+  const nextMyPick = myPickNums.find(n => n >= pickNumber);
+  const picksAway = nextMyPick ? nextMyPick - pickNumber : null;
+
+  const counter = document.getElementById('pick-counter');
+  if (picksAway === 0) {
+    counter.style.color = '#6acc6a';
+    counter.textContent = 'YOUR PICK - ' + pickNumToRoundStr(pickNumber, settings.size);
+  } else if (picksAway === 1) {
+    counter.style.color = '#e0cc88';
+    counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size) + ' (on deck)';
+  } else if (picksAway !== null && picksAway <= 3) {
+    counter.style.color = '#aaa';
+    counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size) + ' (' + picksAway + ' away)';
+  } else {
+    counter.style.color = '#aaa';
+    counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size);
+  }
 }
 
 function renderRoster() {
@@ -551,30 +777,47 @@ function renderSuggestions() {
   const totalRB = myPicks.filter(p => p.pos === 'RB').length;
   const totalWR = myPicks.filter(p => p.pos === 'WR').length;
   const depthPos = totalRB <= totalWR ? 'RB' : 'WR';
-
   const needs = [];
 
-  // Starting slots not yet filled
-  if (filled.QB < s.QB) needs.push({ pos:'QB', urgent: currentRound > 4 });
-  if (filled.RB < s.RB) needs.push({ pos:'RB', urgent: filled.RB === 0 && currentRound > 1 });
-  if (filled.WR < s.WR) needs.push({ pos:'WR', urgent: filled.WR === 0 && currentRound > 1 });
-  if (filled.TE < s.TE) needs.push({ pos:'TE', urgent: currentRound > 5 });
-  if (filled.FLEX < s.FLEX) needs.push({ pos:'FLEX', urgent: false });
-
-  // Always suggest depth at RB or WR - whichever you have less of
-  const alreadySuggestingDepthPos = needs.some(n => n.pos === depthPos || n.pos === 'FLEX');
-  if (!alreadySuggestingDepthPos) {
+  // Rounds 1-2: RB and WR only
+  if (currentRound <= 2) {
+    if (filled.RB < s.RB) needs.push({ pos:'RB', urgent: filled.RB === 0 });
+    if (filled.WR < s.WR) needs.push({ pos:'WR', urgent: filled.WR === 0 });
+    if (filled.FLEX < s.FLEX) needs.push({ pos:'FLEX', urgent: false });
     needs.push({ pos: depthPos, urgent: false, label: depthPos + ' Depth' });
   }
-
-  // K and DST - suggest but lower priority, only if not already drafted
-  if (filled.K < s.K) needs.push({ pos:'K', urgent: false });
-  if (filled.DST < s.DST) needs.push({ pos:'DST', urgent: false });
-
-  // Late rounds - suggest QB depth if none on bench
-  const qbTotal = myPicks.filter(p => p.pos === 'QB').length;
-  if (currentRound > 8 && qbTotal < 2 && filled.QB >= s.QB) {
-    needs.push({ pos:'QB', urgent: false, label: 'QB Depth' });
+  // Rounds 3-4: RB, WR, FLEX, TE if top TEs going fast
+  else if (currentRound <= 4) {
+    if (filled.RB < s.RB) needs.push({ pos:'RB', urgent: filled.RB === 0 });
+    if (filled.WR < s.WR) needs.push({ pos:'WR', urgent: filled.WR === 0 });
+    if (filled.FLEX < s.FLEX) needs.push({ pos:'FLEX', urgent: false });
+    // Check TE scarcity - if fewer than 8 TEs left in top 50
+    const teLest = allPlayers.filter(p => !draftedIds.has(p.id) && p.pos === 'TE').length;
+    if (filled.TE < s.TE && teLest < 12) needs.push({ pos:'TE', urgent: true });
+    else if (filled.TE < s.TE) needs.push({ pos:'TE', urgent: false });
+    const alreadyDepth = needs.some(n => n.pos === depthPos || n.pos === 'FLEX');
+    if (!alreadyDepth) needs.push({ pos: depthPos, urgent: false, label: depthPos + ' Depth' });
+  }
+  // Rounds 5+: Full suggestions minus QB/K/DST restrictions
+  else {
+    if (filled.RB < s.RB) needs.push({ pos:'RB', urgent: filled.RB === 0 });
+    if (filled.WR < s.WR) needs.push({ pos:'WR', urgent: filled.WR === 0 });
+    if (filled.TE < s.TE) needs.push({ pos:'TE', urgent: currentRound > 7 });
+    if (filled.FLEX < s.FLEX) needs.push({ pos:'FLEX', urgent: false });
+    // QB only from round 5+, urgent from round 8+
+    if (filled.QB < s.QB) needs.push({ pos:'QB', urgent: currentRound > 8 });
+    const alreadyDepth = needs.some(n => n.pos === depthPos || n.pos === 'FLEX');
+    if (!alreadyDepth) needs.push({ pos: depthPos, urgent: false, label: depthPos + ' Depth' });
+    // K and DST only from round 12+
+    if (currentRound >= 12) {
+      if (filled.K < s.K) needs.push({ pos:'K', urgent: false });
+      if (filled.DST < s.DST) needs.push({ pos:'DST', urgent: false });
+    }
+    // QB depth from round 9+
+    const qbTotal = myPicks.filter(p => p.pos === 'QB').length;
+    if (currentRound > 9 && qbTotal < 2 && filled.QB >= s.QB) {
+      needs.push({ pos:'QB', urgent: false, label: 'QB Depth' });
+    }
   }
 
   if (!needs.length) {
@@ -595,41 +838,8 @@ function renderSuggestions() {
   document.getElementById('suggestions').innerHTML = pills.join('') || '<span style="font-family:\'DM Mono\',monospace;font-size:0.72rem;color:#aaaaaa">No suggestions available</span>';
 }
 
-function updateHeader() {
-  updatePickCounter();
-  const s = settings.slots;
-  const counts = { QB:0, RB:0, WR:0, TE:0, K:0, DST:0 };
-  for (const p of myPicks) {
-    const pos = p.pos.startsWith('R-') ? p.pos.replace('R-','') : p.pos;
-    if (counts[pos] !== undefined) counts[pos]++;
-  }
-  document.getElementById('roster-summary').innerHTML = ['QB','RB','WR','TE','K','DST'].map(pos => {
-    const f = counts[pos] || 0;
-    const need = f < s[pos];
-    return `<span class="slot-badge${need ? ' need' : ''}">${pos} ${f}/${s[pos]}</span>`;
-  }).join('');
-  const totalRounds = totalRosterSize(settings.slots);
-const myPickNums = getMyPickNumbers(settings.pos, settings.size, totalRounds, settings.draftType);
-const nextMyPick = myPickNums.find(n => n >= pickNumber);
-const picksAway = nextMyPick ? nextMyPick - pickNumber : null;
-
-const counter = document.getElementById('pick-counter');
-if (picksAway === 0) {
-  counter.style.color = '#6acc6a';
-  counter.textContent = 'YOUR PICK - ' + pickNumToRoundStr(pickNumber, settings.size);
-} else if (picksAway === 1) {
-  counter.style.color = '#e0cc88';
-  counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size) + ' (on deck)';
-} else if (picksAway <= 3) {
-  counter.style.color = '#aaa';
-  counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size) + ' (' + picksAway + ' away)';
-} else {
-  counter.style.color = '#aaa';
-  counter.textContent = 'Pick ' + pickNumber + ' - ' + pickNumToRoundStr(pickNumber, settings.size);
-}
-}
-
 function showEndScreen() {
+  if (autopickTimeout) clearTimeout(autopickTimeout);
   document.getElementById('draft-screen').style.display = 'none';
   document.getElementById('end-screen').style.display = 'block';
 
@@ -639,16 +849,14 @@ function showEndScreen() {
 
   myPicks.forEach((p, i) => {
     const pickedAt = myPicksAtRound[i];
-    const pickedAtOverall = pickedAt;
     let valueScore = 0;
-    let valueLabel = 'No Grade';
+    let valueLabel = 'N/A';
     let valueClass = 'neutral';
 
     if (p.roundGrade) {
-      const gradeAsOverall = roundGradeToOverallPick(p.roundGrade, 12);
       const gradeAsOverallAdjusted = roundGradeToOverallPick(p.roundGrade, s.size);
-      const diff = pickedAtOverall - gradeAsOverallAdjusted;
-      const round = Math.ceil(pickedAtOverall / s.size);
+      const diff = pickedAt - gradeAsOverallAdjusted;
+      const round = Math.ceil(pickedAt / s.size);
       const roundWeight = Math.max(1, 16 - round);
       valueScore = diff * (roundWeight / 10);
 
@@ -657,9 +865,6 @@ function showEndScreen() {
       else if (diff >= -3) { valueLabel = 'Fair'; valueClass = 'neutral'; }
       else if (diff >= -10) { valueLabel = 'Reach'; valueClass = 'reach'; }
       else { valueLabel = 'Big Reach'; valueClass = 'big-reach'; }
-    } else {
-      valueLabel = 'N/A';
-      valueClass = 'neutral';
     }
 
     totalScore += valueScore;
@@ -710,11 +915,16 @@ function setFilter(pos, btn) {
 }
 
 function resetDraft() {
+  if (autopickTimeout) clearTimeout(autopickTimeout);
+  autopickEnabled = false;
+  cpuTeams = {};
   draftedIds = new Set();
   myPicks = [];
   myPicksAtRound = [];
   pickNumber = 1;
   document.getElementById('search').value = '';
+  document.getElementById('autopick-live').checked = false;
+  document.getElementById('cpu-announce').classList.remove('visible');
   posFilter = 'ALL';
   document.getElementById('end-screen').style.display = 'none';
   document.getElementById('setup-screen').style.display = 'block';
@@ -724,7 +934,6 @@ function resetDraft() {
 function openModal(id) {
   const p = allPlayers.find(x => x.id === id);
   if (!p) return;
-  const tc = TEAM_COLORS[p.team] || '#bbbbbb';
   document.getElementById('modal-pos').textContent = '2026 Season - ' + p.pos;
   document.getElementById('modal-name').textContent = p.name;
   document.getElementById('modal-stats').innerHTML = `
@@ -738,7 +947,7 @@ function openModal(id) {
     </div>
     ${p.roundGrade ? `<div class="modal-stat">
       <span class="modal-stat-label">Round Grade</span>
-      <span class="modal-stat-value">${p.roundGrade}</span>
+      <span class="modal-stat-value">${formatRoundGrade(p.roundGrade)}</span>
     </div>` : ''}
   `;
   const notes = notesMap[p.name] || '';
@@ -751,28 +960,6 @@ function openModal(id) {
 function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
 function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
 function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
-
-function formatRoundGrade(rg) {
-  const parts = rg.toString().split('.');
-  const round = parts[0];
-  const pick = parts[1] ? parseInt(parts[1]) : 1;
-  return round + '.' + pick;
-}
-
-function getMyPickNumbers(draftPos, leagueSize, totalRounds, draftType) {
-  const picks = [];
-  for (let round = 1; round <= totalRounds; round++) {
-    let pickInRound;
-    if (draftType === 'snake') {
-      pickInRound = round % 2 === 1 ? draftPos : (leagueSize - draftPos + 1);
-    } else {
-      pickInRound = draftPos;
-    }
-    picks.push((round - 1) * leagueSize + pickInRound);
-  }
-  return picks;
-}
-  
 </script>
 </body>
 </html>
