@@ -873,14 +873,14 @@ function showEndScreen() {
 
   const avg = myPicks.length > 0 ? totalScore / myPicks.length : 0;
   let grade, gradeColor, gradeSub;
-  if (avg >= 2.0) { grade = 'A+'; gradeColor = '#6acc6a'; gradeSub = 'Outstanding draft - you got serious value on nearly every pick'; }
-  else if (avg >= 1.2) { grade = 'A'; gradeColor = '#6acc6a'; gradeSub = 'Excellent draft - strong value throughout'; }
-  else if (avg >= 0.5) { grade = 'B+'; gradeColor = '#aae0aa'; gradeSub = 'Solid draft - more value picks than reaches'; }
-  else if (avg >= 0) { grade = 'B'; gradeColor = '#aae0aa'; gradeSub = 'Good draft - mostly on value with a few reaches'; }
-  else if (avg >= -0.5) { grade = 'C+'; gradeColor = '#e0e0aa'; gradeSub = 'Average draft - some reaches offset the value picks'; }
-  else if (avg >= -1.2) { grade = 'C'; gradeColor = '#e0cc88'; gradeSub = 'Below average - reached more often than not'; }
-  else if (avg >= -2.0) { grade = 'D'; gradeColor = '#e0aa6a'; gradeSub = 'Rough draft - significant reaches at key positions'; }
-  else { grade = 'F'; gradeColor = '#ca6a6a'; gradeSub = 'Tough draft - major reaches throughout, hope for waiver wire'; }
+  if (avg >= 2.0) { grade = 'A+'; gradeColor = '#6acc6a'; gradeSub = 'Outstanding draft - you got serious value on nearly every pick. Of course, this is just my model. Your mileage may vary.'; }
+  else if (avg >= 1.2) { grade = 'A'; gradeColor = '#6acc6a'; gradeSub = 'Excellent draft - strong value throughout. At least, allegedly.'; }
+  else if (avg >= 0.5) { grade = 'B+'; gradeColor = '#aae0aa'; gradeSub = 'Solid draft - more value picks than reaches. We shall see how the year pans out.'; }
+  else if (avg >= 0) { grade = 'B'; gradeColor = '#aae0aa'; gradeSub = 'Good draft - mostly on value with a few reaches. Believe in your guys!'; }
+  else if (avg >= -0.5) { grade = 'C+'; gradeColor = '#e0e0aa'; gradeSub = 'Average draft - some reaches offset the value picks. Seems like you may be playing in a balanced league. Good! Competition makes this way more fun.'; }
+  else if (avg >= -1.2) { grade = 'C'; gradeColor = '#e0cc88'; gradeSub = 'Below average - reached more often than not. If your guys pan out though, wow you\'ll have some bragging rights.'; }
+  else if (avg >= -2.0) { grade = 'D'; gradeColor = '#e0aa6a'; gradeSub = 'Rough draft - significant reaches at key positions. REEEEACH!!! Quick, everyone boo.'; }
+  else { grade = 'F'; gradeColor = '#ca6a6a'; gradeSub = 'Tough draft - major reaches throughout, hope for some waiver wire magic to save you. And doubly hope your league punishment isn\'t too bad.'; }
 
   document.getElementById('grade-display').textContent = grade;
   document.getElementById('grade-display').style.color = gradeColor;
