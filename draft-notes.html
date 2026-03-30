@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-QEQFCL7ZJY');
 </script>
 <meta charset="UTF-8">
@@ -28,11 +27,23 @@
   .pos-badge { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.5rem; }
   .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: 0.04em; line-height: 0.9; color: var(--accent); }
   .content { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 6rem; }
-  .content p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
-  .content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em; color: var(--accent); margin: 2.5rem 0 1rem; }
-  .content ul { list-style: none; margin-bottom: 1.25rem; }
-  .content ul li { color: #ccc; font-size: 0.95rem; line-height: 1.75; padding: 0.3rem 0 0.3rem 1rem; border-left: 2px solid var(--border-bright); margin-bottom: 0.5rem; }
-  .placeholder-note { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border-bright); border-radius: 4px; padding: 1rem; margin-bottom: 2rem; }
+  .content > p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
+  .placeholder-note { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border-bright); border-radius: 4px; padding: 1rem; margin-bottom: 2rem; line-height: 1.6; }
+
+  /* COLLAPSIBLE SECTIONS */
+  .section { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; cursor: pointer; background: var(--surface); transition: background 0.15s; user-select: none; gap: 1rem; }
+  .section-header:hover { background: #202020; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--accent); }
+  .section-football { font-size: 1.2rem; transition: transform 0.3s ease; flex-shrink: 0; display: inline-block; }
+  .section.open .section-football { transform: rotate(90deg); }
+  .section-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; padding: 0 1.25rem; background: #0e0e0e; }
+  .section.open .section-body { max-height: 3000px; padding: 1.25rem; }
+  .section-body p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+  .section-body ul { list-style: none; margin-bottom: 1.25rem; }
+  .section-body ul li { color: #ccc; font-size: 0.95rem; line-height: 1.75; padding: 0.3rem 0 0.3rem 1rem; border-left: 2px solid var(--border-bright); margin-bottom: 0.5rem; }
+
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
   .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
   .drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: #0a0a0a; border-left: 1px solid #2a2a2a; z-index: 200; transition: right 0.3s ease; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
@@ -46,8 +57,6 @@
     .nav-links { display: none; }
     .hamburger { display: flex; }
     .hero { padding: 2rem 1rem 1.5rem; }
-    .controls { padding: 0.75rem 1rem; }
-    .table-wrap { padding: 0 0 3rem; }
   }
 </style>
 </head>
@@ -83,39 +92,115 @@
     <a href="draft-notes.html" class="active">Draft Notes</a>
   </div>
 </nav>
+
 <div class="hero">
-  <div class="pos-badge">2026 Season · ASP Model</div>
+  <div class="pos-badge">2026 Season - ASP Model</div>
   <h1>Draft<br>Notes</h1>
 </div>
+
 <div class="content">
-  <div class="placeholder-note">Let me preface this by stating: there is no one-size-fits-all strategy when it comes to drafting. It is league format dependent, league-mate dependent, year dependent, etc etc etc. This is just my general notes and guidelines, based on my rankings and findings from playing 30+ leagues a year for several years. I do also play in a variety of league formats, and will try to mark format-specific notes as they appear. Again, this is not a draft guide. Drafting gets better and easier by doing it more and understanding the concepts, because the league landscape/player usage/schemes/etc do change on a somewhat cyclical basis.
+  <div class="placeholder-note">Let me preface this by stating: there is no one-size-fits-all strategy when it comes to drafting. It is league format dependent, league-mate dependent, year dependent, etc etc etc. This is just my general notes and guidelines, based on my rankings and findings from playing 30+ leagues a year for several years. I do also play in a variety of league formats, and will try to mark format-specific notes as they appear. Again, this is not a draft guide. Drafting gets better and easier by doing it more and understanding the concepts, because the league landscape, player usage, schemes, etc do change on a somewhat cyclical basis.</div>
+
+  <!-- EARLY ROUNDS STRATEGY -->
+  <div class="section" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <span class="section-title">Early Rounds Strategy</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>I'm not a fan of early TEs or QBs. I know there are some great players to be had there, I know! But personally, I've been burned by it more than it's helped, and I feel like I've missed out on some really good WR/RBs by taking an early QB, and by a lesser extent, TE. Depending on how the board falls, there are still times I do it. Like many of the points here, there are no hard and fast rules. (Don't draft a kicker until at least the 10th, and that IS a hard rule).</p>
+      <p>TE used to be more of a wasteland. It's less so now. I think more guys want to be TEs, especially as kids who watched Kelce, Gronk, Gonzalez, etc play become NFL players themselves. It's a more popular position than ever, with more receiving work than ever. Thus, I feel like the reach is less valuable. There are always a few value guys every year that will get you 85% of the way there while the rest of your roster is stronger. (If you play in a TEP league, ignore this).</p>
+      <p>On my teams where I have taken the early elite QB, there are some weeks where the QB will outright win you your week. I don't think it's worth the expense of the rest of the roster feeling weaker. Your mileage may vary. Also pick position does weigh in here. If I'm picking late in a bigger league (12+ members) then I'd have the 1.12, 2.1, 3.12, 4.1 picks as my first four. If there is an elite QB available at that 3/4 turn, I might take him there, knowing I get the next pick to spend elsewhere. (If you are in superflex, disregard this).</p>
+      <p>Don't be scared to reach, especially in later rounds. A 1st round vs 3rd round grade - that's tough. But a 10th vs 11th, who really cares at that point. Get your guys. You'll be happier playing those teams too. ADP matters less and less for each round that passes.</p>
+    </div>
+  </div>
+
+  <!-- READING THE LEAGUE LANDSCAPE -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <span class="section-title">Reading the League Landscape</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Draft strategy changes on two major cycles - yearly and (for lack of a better word) generationally. 2025 had more good WRs than RBs, at least projected before the season. All other things being equal, identify weaker positions prior to drafting, and bias players at the scarcer position. Teams where I followed this trend tended to do better.</p>
+      <p>On the generational note: understand defensive schemes. Understand offensive schemes and how they adapt. Understand how different coaches scheme and how they plan given the talents and deficiencies on their teams. The NFL used to be insanely run heavy and RBs were worth their weight in gold. Then it shifted more towards the air raid, and WRs and QBs were far more valuable. Rushing QBs became more mainstream and had a huge fantasy premium. Then the 2 high safety look got popular alongside its variations, hurting the explosive passing game. Linebackers got smaller and more agile, better at coverage, worse at run defending. So the run game flourished once more. This is a long way of saying - understand the game, understand the cyclical changes.</p>
+      <p>Identify positive regression candidates early, because there is value to be had there. I think the Titans will be much more fantasy relevant in 2026. No one watched them on TV, but everyone knew they sucked. Those who did watch though will see that Cam Ward is legit despite throwing to randoms most of the year with a terrible supporting cast and terrible coaching cast. They've added talent in free agency, and they have high picks to add more in the draft. The coaching situation has also improved drastically.</p>
+      <p>Similarly, identify negative regression candidates. I was out on Saquon (and by and large, the Eagles) in 2025. I didn't think Patullo was a good coordinator (lol, was right about that one), but also Saquon's workload was completely unsustainable. I didn't draft him anywhere. And while I do believe in the talent of both AJ Brown and Devonta Smith, I was worried it would be too boom or bust in 2025. Largely right there as well. Another regression candidate for me in 2025 was the Lions - brain drain and a hard schedule. Still produced good points, particularly Gibbs and St. Brown, but it wasn't necessarily a "buy everyone you can" situation like the year or two prior.</p>
+    </div>
+  </div>
+
+  <!-- PLAYERS TO TARGET -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <span class="section-title">Players to Target</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Read training camp reports - from every team. I know, I know. Be cynical when you read them, a lot of the beat reporters are fans. But this is a great place to find sleepers and value picks. Don't be the person sitting there during week 1 thinking "damn that guy looks good, wish I'd known and drafted him." Be the person sitting there thinking "wow, I am so happy I read all those Bears training camp reports and drafted that guy, he looks great."</p>
+      <p>Rookies are great, but risky. They also have odd ADPs. Some of them get inflated and overhyped - try to avoid those. Some are seen as risky, and there can be good value there. Use your best judgement and research here, and remember that situation and landing spot matters a lot, more so for rookies than anyone else. Even for great players, it can also take time to get up to speed. Of course, by the same metric, there have been tons of amazing rookie seasons. Situation, situation, situation.</p>
+      <p>Situation matters more broadly too. Take Ashton Jeanty. I think he is a phenomenal talent. His contact balance is elite and he is so good with the ball in his hands. Problem is, the 2025 Raiders had such a terrible offensive line. He was getting hit behind the line most carries - terrible blocking, terrible play calls, terrible scheming. And while he still put up a plenty respectable season, anyone who watched him play knows there is so much more meat on the bone. But despite talent, situation does matter. See also: Sam Darnold, Daniel Jones.</p>
+    </div>
+  </div>
+
+  <!-- PLAYERS TO BE CAREFUL WITH -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection('s4')">
+      <span class="section-title">Players to Be Careful With</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>I hate the term "QB proof." Some QBs are so bad that their skill players are, in fact, not QB-proof. JJ McCarthy, for instance. Justin Jefferson is an amazing talent, and still struggled to put up numbers. There is absolutely a limit. Know which QBs are trash, and which QBs may not be good but can at least feed a number one option. Like Jacoby Brissett or Jameis Winston - some lower tier guys can absolutely provide enough volume. Bonus points if they throw a pick or two and keep the score close and competitive.</p>
+      <p>Sit your high picks. Not immediately, obviously. Not after one bad week. But if there is a clear pattern developing where they aren't putting up the expected points, they will cost you weeks. Don't get too attached to the draft capital, because once they are on your roster, it doesn't really matter.</p>
+    </div>
+  </div>
+
+  <!-- IN-SEASON MANAGEMENT -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <span class="section-title">In-Season Management</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Injuries are not a gamebreaker. They are a gut punch, but they are not the end. I have had many teams where I've lost at least one (but often more) of my first four round picks and still made playoffs if not the final. Work the wire, work trades, play week-to-week favorable matchups.</p>
+      <p>Trade! So many leagues don't trade at all and that is boring. If you draft well, it's very possible you'll have a good player or two on your bench because you just can't fit him into your lineup. Trade him away for someone at a position of need - don't get attached! (I'd be less aggressive trading in dynasty, depending on the guy's age).</p>
+      <p>Generally, teams that make more moves win more. In redraft particularly, the bottom of your roster should be churning on a weekly basis. Maybe someone on the depth chart had an injury in front and now is the starter, maybe he has shown flashes, maybe there has been a trade - whatever the circumstances are. Some of these guys will be one week wonders, but some of them will genuinely improve your roster and can be used as trade fodder later.</p>
+    </div>
+  </div>
+
+  <!-- KICKERS AND DST -->
+  <div class="section" id="s6">
+    <div class="section-header" onclick="toggleSection('s6')">
+      <span class="section-title">Kickers and DST</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Don't reach for kickers. I know Brandon Aubrey is amazing, and anyone who watches football with me knows I am a huge special teams enthusiast. It's an underrated phase of the game that can have huge impact. Looking at you, 2010 Chargers. But in terms of fantasy, you'll see an elite kicker or two go early - and I mean EARLY. It's just not worth the draft capital, as every year there are at least 2 top kickers free on waivers. Also, it's kind of a high volatility position, even for the best guys. The rest of the team still has to create the opportunity for them to get to kick, and we want field goals not extra points, which can be hard to forecast. Weather is also a major factor. Just not worth the draft capital in my opinion, especially in ranges where you are drafting valuable depth rather than dart throws.</p>
+      <p>This is also why I don't have round grades on kickers and DST. I'll rank them, sure. But even the best of the best rankings for those two positions feel like a crapshoot. I'll have my ranking, but it seems to get thrown out almost every year.</p>
+      <p>Look at past data - the best kickers are only 2-3 points better per game than the median kickers. Typically. Just don't think it is worth the reach. I'd rather have better depth at my premium positions.</p>
+      <p>Similar thoughts for DST. So much of fantasy is focused on offense that defense really takes a back seat. There are certainly analysts that understand defenses well, but they are fewer and further between. Streaming D/ST against bad teams is fine most of the time, and like kickers, D/ST is not worth reaching on. Also, defensive scoring changes drastically between leagues and more and more leagues are axing it altogether - so your mileage may vary significantly here.</p>
+    </div>
+  </div>
+
+  <!-- GENERAL PHILOSOPHY -->
+  <div class="section" id="s7">
+    <div class="section-header" onclick="toggleSection('s7')">
+      <span class="section-title">General Philosophy</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Lots of the fantasy experts online aren't that great. Make your own decisions. Similarly, trust your gut and your eyes. You watch football - use that knowledge.</p>
+      <p>Don't reach for kickers until at least round 10. That one is a hard rule, not a guideline.</p>
+      <p>The rankings and model are a tool, not a gospel. I built this to give myself an edge and to organize my thinking. You should use it the same way - as a starting point, not an endpoint. The best drafters combine data with instinct, and know when to deviate from their board.</p>
+    </div>
+  </div>
+
 </div>
-  <p>I'm not a fan of early TEs or QBs. I know there are some great players to be had there, I know! But personally, I've been burned by it more than it's helped, and I feel like I've missed out on some really good WR/RBs by taking an early QB, and by a lesser extent, TE. Depending on how the board falls, there are still times I do it. Like many of the points here, there are no hard and fast rules. (Don't draft a kicker until at least the 10th, and that IS a hard rule).</p>
-  <p>TE used to be more of a wasteland. It's less so now. I think more guys want to be TEs, especially as kids who watched Kelce/Gronk/Gonzalez/etc play become NFL players themselves. It's a more popular position than ever, with more receiving work than ever. Thus, I feel like the reach is less valuable. There are always a feel value guys every year that will get you 85% of the way there - while the rest of your roster is stronger. (If you play in a TEP league, ignore this).</p>
-  <p>On my teams where I have taken the early elite QB, there are some weeks where the QB will outright win you your week. I don't think it's worth the expense of the rest of the roster feeling weaker. Your mileage may vary. Also pick position does weigh in here. If I'm picking late in a bigger league (12+ members) then I'd have the 1.12, 2.1, 3.12, 4.1 picks as my first four. If there is an elite QB available at that 3/4 turn, I might take him there, knowing I get the next pick to spend elsewhere. (If you are in superflex, disregard this).</p>
-  <p>Draft strategy changes on two major cycles, yearly and (for lack of a better word) generationally. 2025 had more good WRs than RBs, at least projected before the season. All other things being equal, identify weaker positions prior to drafting, and bias players at the scarcer position. Teams when I followed this trend tended to do better. Now on the generational note: understand defensive schemes. Understand offensive schemes and how they adapt. Understand how different coaches scheme and how they plan given the talents and deficiencies on their teams. The NFL used to be insanely run heavy and RBs were worth their weight in gold. Then it shifted more towards the air raid, and WRs and QBs were far more valuable. Rushing QBs became more mainstream, and had a huge fantasy premium. Then the 2 high safety look got popular, alongside its variations, hurting the explosive passing game. Linebackers got smaller and more agile, better at coverage, worse and run defending. So the run game flourished once more. This is a long way of saying, understand the game, understand the cyclical changes.</p>
-  <p>I hate the term 'QB proof.' Some QBs are so shit that their skill players are, in fact, not QB-proof. JJ McCarthy, for instance. Justin Jefferson is an amazing talent, and still struggled to put up numbers. There is absolutely a limit. Know which QBs are trash, and which QBs may not be good, but can at least feed a #1 option. Like Jacoby Brissett or Jameis Winston, some lower tier guys can absolutely provide enough volume. Bonus points if they throw a pick or two and keep the score close and competitive. 
-</p>
-  <p>Read training camp reports... From every team. I know, I know. Be cynical when you read them, a lot of the beat reporters are fans. But this is a great place to find sleepers and value picks. Don't be the person sitting there during week 1 thinking 'damn that guy looks good, wish I'd known and drafted him.' Be the person sitting there thinking 'wow, I am so happy I read all those Bears training camp reports and drafted that guy, he looks great.'
-</p>
-  <p>Injuries are not a gamebreaker!!! They are a gut punch, but they are not the end. I have had many teams where I've lost at least one (but often more) of my first four round picks and still made playoffs if not the final. Work the wire, work trades, play week-to-week favorable matchups. 
-</p>
-<p>Lots of the fantasy experts online aren't that great. Make your own decisions. Similarly, trust your gut and your eyes.</p>
-<p>Trade! So many leagues don't trade at all and that is boring! If you draft well, it's very possible you'll have a good player or two on your bench, because you just can't fit him into your lineup. Trade him away for someone at a position of need - don't get attached! (I'd be less aggressive trading in dynasty, depending on the guy's age).</p>
-<p>GENERALLY, teams that make more moves, win more. In redraft particularly, the bottom of your roster should be churning on a weekly basis. Maybe someone on the depth chart had an injury in front and now is the starter, maybe he has shown flashes, maybe there has been a trade - whatever the circumstances are. Some of these guys will be one week wonders, but some of them will genuinely improve your roster and/or can be used as trade fodder later. </p>
-<p>Sit your high picks. Not immediately, obviously. Not after one bad week. But if there is a clear pattern developing where they aren't putting up the expected points, they will cost you weeks. Don't get too attached to the draft capital, because once they are on your roster, it doesn't really matter. </p>
-<p>Situation matters. Take Ashton Jeanty. I think he is a phenomenal talent. His contact balance is elite and he is so good with the ball in his hands. Problem is, the 2025 Raiders had such a dogshit offensive line. It was OFFENSIVE! He was getting hit behind the line most carries. Terrible blocking, terrible play calls, terrible scheming. As more info comes out about the short-lived Pete Carroll regime, this isn't surprising. And while he still put up a plenty respectable season, anyone who watched him play knows there is so much more meat on the bone - he is the real deal. But despite talent, situation does matter. See also: Sam Darnold, Daniel Jones.</p>
-<p>Don't be scared to reach, especially in later rounds. A 1st round vs 3rd round grade... That's tough. But a 10th vs 11th, who really cares at that point. Get your guys. You'll be happier playing those teams too. ADP matters less and less for each round that passes.</p>
-<p>Rookies are great, but risky. They also have odd ADPs. Some of them get inflated and overhyped, try to avoid those. Some are seen as risky, and there can be good value there. Use your best judgement and research here and remember that situation and landing spot matters a lot, moreso for rookies than anyone else. Even for great players, it can also take time to get up to speed... Of course, by the same metric, there have been tons of amazing rookie season. SITUATION, SITUATION, SITUATION.</p>
-<p>Identify positive regression candidates early, because there is value to be had there. I think the Titans will be much more fantasy relevant in 2026. No one watched them on TV, but everyone knew they sucked. Those who did watch though, will see that Cam Ward is legit despite throwing to randoms most of the year with a terrible supporting cast and terrible coaching cast. They've added talent in free agency, and they have high picks to add more in the draft. The coaching situation has also improved drastically.</p>
-<p>Similarly, identify negative regression candidates. I was out on Saquon (and by and large, the Eagles) in 2025. I didn't think Patullo was a good coordinator (lol, was right about that one), but also Saquon's workload was completely unsustainable. I didn't draft him anywhere. And while I do believe in the talent of both AJ Brown and Devonta Smith, I was worried it would be too boom or bust in 2025. Largely right there as well. Another regression candidate for me in 2025 was the Lions. Brain drain and a hard schedule. Still produced good points, particularly Gibbs and St. Brown, but it wasn't necessarily a 'buy everyone you can' situation like the year or two prior. </p>
-<p>Don't reach for kickers. I know Brandon Aubrey is amazing, and anyone who watches football with me knows I am a huge special teams enthusiast. It's an underrated phase of the game that can have huge impact. Looking at you, 2010 Chargers. But in terms of fantasy, you'll see an elite kicker or two go early. And I mean EARLY! It's just not worth the draft capital, as every year there are at least 2 top kickers free on waivers. Also, it's kind of a high volatility position, even for the best guys. The rest of the team still has to create the opportunity for them to get to kick; and we want field goals, not extra points, which can be hard to forecast. Also also, WEATHER. Just not worth the draft capital in my opinion, especially in ranges where you are drafting valuable depth, not dart throws.</p>
-<P>This is also why I don't have round grades on kickers and DST. I'll rank them, sure. But even the best of the best rankings for those two positions feel like a crapshoot. I'll have my ranking, sure, but it seems to get thrown out almost every year.</P>
-<p>Look at year's past data (I guess I just felt the need to defend this even more) but the best kickers are only 2-3 points better per game than the median (not even the worst) kickers. Typically. Just don't think it is worth the reach, I'd rather have better depth at my premium positions.</p>
-<p>Similar thoughts for DST. Also, so much of fantasy is focused on offense, that defense really takes a back seat. There are certainly analysts that understand defenses well, but they are fewer and further between. Streaming D/ST against bad teams is fine most of the time, and like kickers, D/ST is not worth reaching on. </p>
-<p>ALSO, I feel like the defensive scoring changes drastically between leagues and more and more leagues are axing it all together so... YMMV.</p>
-</div>
+
 <script>
+  function toggleSection(id) {
+    const section = document.getElementById(id);
+    section.classList.toggle('open');
+  }
   function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
 </script>
 </body>
