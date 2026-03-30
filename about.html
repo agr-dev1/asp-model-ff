@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-QEQFCL7ZJY');
 </script>
 <meta charset="UTF-8">
@@ -30,9 +29,39 @@
   .content { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 6rem; }
   .content p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
   .content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em; color: var(--accent); margin: 2.5rem 0 1rem; }
-  .content ul { list-style: none; margin-bottom: 1.25rem; }
-  .content ul li { color: #ccc; font-size: 0.95rem; line-height: 1.75; padding: 0.3rem 0 0.3rem 1.25rem; border-left: 2px solid var(--border-bright); margin-bottom: 0.5rem; padding-left: 1rem; }
   .placeholder-note { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border-bright); border-radius: 4px; padding: 1rem; margin-bottom: 2rem; }
+
+  /* COLLAPSIBLE SECTIONS */
+  .section { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden; }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.25rem; cursor: pointer; background: var(--surface);
+    transition: background 0.15s; user-select: none; gap: 1rem;
+  }
+  .section-header:hover { background: #202020; }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem;
+    letter-spacing: 0.06em; color: var(--accent);
+  }
+  .section-football {
+    font-size: 1.2rem; transition: transform 0.3s ease; flex-shrink: 0;
+    display: inline-block;
+  }
+  .section.open .section-football { transform: rotate(90deg); }
+  .section-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 1.25rem;
+    background: #0e0e0e;
+  }
+  .section.open .section-body { max-height: 2000px; padding: 1.25rem; }
+  .section-body p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* Sub-items within rookie section */
+  .subsection { margin: 1rem 0; padding-left: 1rem; border-left: 2px solid var(--border-bright); }
+  .subsection-title { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.06em; color: #aaa; margin-bottom: 0.5rem; }
+
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
   .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
   .drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: #0a0a0a; border-left: 1px solid #2a2a2a; z-index: 200; transition: right 0.3s ease; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
@@ -46,8 +75,6 @@
     .nav-links { display: none; }
     .hamburger { display: flex; }
     .hero { padding: 2rem 1rem 1.5rem; }
-    .controls { padding: 0.75rem 1rem; }
-    .table-wrap { padding: 0 0 3rem; }
   }
 </style>
 </head>
@@ -83,30 +110,135 @@
     <a href="draft-notes.html">Draft Notes</a>
   </div>
 </nav>
+
 <div class="hero">
-  <div class="pos-badge">2026 Season · ASP Model</div>
+  <div class="pos-badge">2026 Season - ASP Model</div>
   <h1>About the<br>ASP Model</h1>
 </div>
+
 <div class="content">
   <div class="placeholder-note">A breakdown of the model and my thoughts</div>
+
   <p>The ASP Model (and yes, ASP stands for something, I don't remember what...) is a model of evaluation that I developed over years of borderline obsession (ok, regular obsession) with fantasy football. That, and the compulsive need to beat all my friends and family in somewhat meaningless competition where other people are actually playing the sport. But beyond the self-deprecation, I work an office job and spend a ton of time at the computer, and therefore a ton of time working on this. If you're my boss reading this, pretend you didn't see it. No, I will not divulge my proprietary formulas, but below is a breakdown on what goes into the rankings.</p>
-  <p>Point projections are the bread and butter of everyone's rankings - not just mine. While I am not at the point of generating my own from scratch (at least not yet), I do use an aggregation of sources. Vegas's season-long props are also factored in, because the house always wins. Regardless of your opinion on sports betting, it's in the sportsbooks' best interest to gather as much information as possible to make the most amount of money. It's well-known that Vegas has access to more info about players than the average joe, so it can be a great resource.</p>
-  <p>Injuries. Oh, injuries. This is a subjective score. Not all injuries are created equal, nor is the soft tissue of every player. Some injuries really are freak accidents and not a result of a player being 'injury prone.' Think, Mahomes diving backwards into Rashee Rice's leg in 2024, or Teddy B's hospital neck breaker to Jalen McMillan in the 2025 preseason. I am not taking points off for that, I don't consider that chronic. There are other players though that seem to constantly have a hamstring, or an ankle, and you can really only count on for 12 games a year. Now those may be a great 12 games, but 12 is not 17 and availability is the best ability. Some players will also play through anything, like Amon-Ra. So yes, while it is a subjective score, it is based in fact... Now, should there be a subscore for players near that electrical substation?</p>
-  <p>Football is, as we all know, a team sport. Some aspects of the team and environment are weighted into the ASP score. Strength of schedule, offensive line ranking, and weather. Note that weather impacts kickers' scores the most. In some ways, these scores are subjective too. We have good data to build upon, but there are surprises every year - which is why we watch! Certain teams end up being better than expected, others worse. I still think general strength of schedule is good to include, despite not being pinpoint accurate, it is a good baseline. Same concept applies to the o-line ranking. They aren't weighted too heavily, but I like to include it as a way to give an edge or tiebreaker to players in the same round. For example, running backs with similar grades and talent, the model will give the edge to the guy who plays in worse weather and/or with a better o-line, and/or with a higher strength of schedule. I should also add that the weighting works differently depending on position. Bad weather hurts kickers and benefits RBs, for instance. I also have two o-line rankings per team, pass-blocking and run-blocking. Different skills, and some teams are only good at one or the other.</p>
-  <p>Let's take a "quick" detour into some of the other counting stats. I have age, which is self-explanatory and position-specific of course. There is also data from the prior season weighed in, which is valuable, specifically the consistency score... Though, there is a time for boom bust, high standard deviation players, and that time isn't solely best-ball leagues. It's good to have a balance between them and players with a higher floor. Also from past seasons, I weigh past PPG, as well as total games played. Again, always good to have fantasy players who are actually on the field.</p>
-  <p>The king of stats though, at least in my opinion, is VORP. Value over replacement player. This is your positional value and a huge component of the ASP score. And yes, I know this is league format specific. As of right now, my rankings are assuming half-ppr, non-superflex, non TEP leagues. Bog standard, with a team layout of 1 QB, 2 WR, 2 RB, 1 TE, 1 FLEX, DST, K, and then a handful of bench players and an IR slot. Like I said, standard. At some point in the future, I may make additional sheets for those league formats, though generally people playing in those leagues (or dynasty ones!) have their own methods of player evaluation. Anyways - back to VORP! It's always an estimate, since you never know who the waiver wire heroes will be in a given year, or how many of a certain position someone in your league may be holding, but the model gets it close enough. It's why you'll never see QBs before round 3 (and even that I'm a bit dubious on, but that's a topic for a different page) and why the vast majority of the early picks are RBs and WRs. Each team will be playing five of those two groups a week, and those players SHOULD make up the majority of their benches as well. Whereas in a typical league, teams start one QB and might have an additional one on the bench. </p>
-  <p>Finally, the confidence score. This one is completely subjective, because it is my score. Like all fantasy players, I have my hits and my misses. But anyone can just add a bunch of scores together, although my formula and weights are secret, but this score makes the list more 'mine.' More unique, for lack of a better descriptor. I watch a lot of football. Too much, if you ask anyone else in my life. Lot of film, lot of breakdowns. Still, I won't pretend that I am a scout or expert or coach. Regardless, consider the confidence score like my 'film' score. How good is this guy? How bad? Sometimes there is a player that shines on screen, but might not get the opportunities you'd like to see in a fantasy player. Probably because they are stuck behind an even better player on the depth chart, or something similar. I give those players a high confidence score, which does boost their ASP ranking a little bit going into the next season. That, I think, can produce some real value, especially as situations change in the offseason. Again, your mileage may vary, but I was a big proponent of Daniel Jones in 2025... And Calvin Ridley, so we'll call it 50/50. Among other guys that I had starred were: Quinshon Judkins, Jaxson Smith-Njigba, Jalen Coker, Tetairoa McMillan, Emeka Egbuka, Khalil Shakir, Sam Darnold, Ricky Pearsall, and Harold Fannin Jr.... Decent hit rate, I think I can do better. Though I will pat myself on the back and say that I was reaching for JSN considerably given the ADP at draft time.</p>
-  <P>I know I said finally in the last section, but I also need to talk about rookies, since they won't have the same data as other players and they are evaluated differently. I don't really compare production due to the insane differences of college conferences and schedules. A WR putting up insane stats in the MAC is very different than a more modest statline from a WR in the BIG 10 or SEC. It just lacks the parity of the NFL. Because of this, I look at the following for rookies to calculate their rASP (rookie-ASP).</P>
-  <p>Age: This is self-explanatory. A younger prospect tends to be better, but not always. It's a very small percentage of the weighted score and is position specific.</p>
-  <p>Year: This includes red shirt years. Generally, and I really am being general here, a prospect is viewed as 'better' if they come out of college as a junior instead of a senior... I've actually removed this one from the calculation (though I am still tracking it) just due to NIL and other changes.</p>
-  <p>Draft Capital: Teams are more incentivized to play higher picks. By fans, by GMs, by media. Everyone can name their team's first round pick, far fewer can name the 7th round dart throw. Less marketing-based, higher round picks tend to be better. Not always, but tend to be. There are always going to be later round heroes - Puka Nacua, anyone? And I don't think the latter round picks are totally unpredictable either, more on that later. </p>
-  <p>Prospect Grade: These are a small percentage of rASP. They are also considered in aggregrate between several draft 'graders.' There is typically very little deviation.</p>
-  <p>Landing Spot Score: Landing spot is my favorite. It's also subjective but based in logic. Some teams are better for players of a certain position than others, and this changes multiple times a year, and during free agency prior to the season starting. It's a numeric score, obviously, but I think looking at an example is the best way to describe it. </p>
-  <p>Let's look at the Raiders. We all know they are taking Fernando Mendoza with the 1st pick - it may as well be written in stone. I'd rate this landing spot close to the top. They have a good new coach, a great RB and TE. I would say that WR and O-line are a bit suspect, but they addressed both in free agency, and will address them both in the draft I'd imagine. For context: added Tyer Linderbaum at center, which is a great move on it's own, but also lets Jackson Powers-Johnson move back to guard, which is his natural (read: better) position. They also added Jalen Nailor who I think is better than his stats, but was buried behind Justin Jefferson, Jordan Addison, and TJ Hockenson (all SONS), and hampered by some of the worst QB play I've ever seen. Now, you may also mark Nailor here (depending on how the Raiders draft) as a value pick for fantasy, based on the other metrics discussed above, but I digress. Landing spots are position specific, and quite variable year to year.</p>
-  <p>Injury Score, confidence, and VORP factor in, all have been defined above.</P>
-  <p>RAS: Relative Athletic Score, pretty self explanatory. It's easier to teach an athletic freak to run better routes than it is to teach the route running technician to be bigger and taller.</P>
+
+  <!-- POINT PROJECTIONS -->
+  <div class="section" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <span class="section-title">Point Projections</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Point projections are the bread and butter of everyone's rankings - not just mine. While I am not at the point of generating my own from scratch (at least not yet), I do use an aggregation of sources. Vegas's season-long props are also factored in, because the house always wins. Regardless of your opinion on sports betting, it's in the sportsbooks' best interest to gather as much information as possible to make the most amount of money. It's well-known that Vegas has access to more info about players than the average joe, so it can be a great resource.</p>
+    </div>
+  </div>
+
+  <!-- VORP -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <span class="section-title">VORP - The Most Important Stat</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>The king of stats, at least in my opinion, is VORP. Value over replacement player. This is your positional value and a huge component of the ASP score. And yes, I know this is league format specific. As of right now, my rankings are assuming half-ppr, non-superflex, non TEP leagues. Bog standard, with a team layout of 1 QB, 2 WR, 2 RB, 1 TE, 1 FLEX, DST, K, and then a handful of bench players and an IR slot. Like I said, standard. At some point in the future, I may make additional sheets for those league formats, though generally people playing in those leagues (or dynasty ones!) have their own methods of player evaluation.</p>
+      <p>It's always an estimate, since you never know who the waiver wire heroes will be in a given year, or how many of a certain position someone in your league may be holding, but the model gets it close enough. It's why you'll never see QBs before round 3 (and even that I'm a bit dubious on, but that's a topic for a different page) and why the vast majority of the early picks are RBs and WRs. Each team will be playing five of those two groups a week, and those players SHOULD make up the majority of their benches as well. Whereas in a typical league, teams start one QB and might have an additional one on the bench.</p>
+    </div>
+  </div>
+
+  <!-- THE INJURY SCORE -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <span class="section-title">The Injury Score</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Injuries. Oh, injuries. This is a subjective score. Not all injuries are created equal, nor is the soft tissue of every player. Some injuries really are freak accidents and not a result of a player being "injury prone." Think, Mahomes diving backwards into Rashee Rice's leg in 2024, or Teddy B's hospital neck breaker to Jalen McMillan in the 2025 preseason. I am not taking points off for that, I don't consider that chronic. There are other players though that seem to constantly have a hamstring, or an ankle, and you can really only count on for 12 games a year. Now those may be a great 12 games, but 12 is not 17 and availability is the best ability. Some players will also play through anything, like Amon-Ra. So yes, while it is a subjective score, it is based in fact... Now, should there be a subscore for players near that electrical substation?</p>
+    </div>
+  </div>
+
+  <!-- TEAM & ENVIRONMENT -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection('s4')">
+      <span class="section-title">Team &amp; Environment Factors</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Football is, as we all know, a team sport. Some aspects of the team and environment are weighted into the ASP score. Strength of schedule, offensive line ranking, and weather. Note that weather impacts kickers' scores the most. In some ways, these scores are subjective too. We have good data to build upon, but there are surprises every year - which is why we watch! Certain teams end up being better than expected, others worse. I still think general strength of schedule is good to include, despite not being pinpoint accurate, it is a good baseline.</p>
+      <p>Same concept applies to the o-line ranking. They aren't weighted too heavily, but I like to include it as a way to give an edge or tiebreaker to players in the same round. For example, running backs with similar grades and talent, the model will give the edge to the guy who plays in worse weather and/or with a better o-line, and/or with a higher strength of schedule. I should also add that the weighting works differently depending on position. Bad weather hurts kickers and benefits RBs, for instance. I also have two o-line rankings per team, pass-blocking and run-blocking. Different skills, and some teams are only good at one or the other.</p>
+    </div>
+  </div>
+
+  <!-- COUNTING STATS -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <span class="section-title">Counting Stats &amp; Past Performance</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>I have age, which is self-explanatory and position-specific of course. There is also data from the prior season weighed in, which is valuable, specifically the consistency score. Though, there is a time for boom bust, high standard deviation players, and that time isn't solely best-ball leagues. It's good to have a balance between them and players with a higher floor. Also from past seasons, I weigh past PPG, as well as total games played. Again, always good to have fantasy players who are actually on the field.</p>
+    </div>
+  </div>
+
+  <!-- CONFIDENCE SCORE -->
+  <div class="section" id="s6">
+    <div class="section-header" onclick="toggleSection('s6')">
+      <span class="section-title">The Confidence Score</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>This one is completely subjective, because it is my score. Like all fantasy players, I have my hits and my misses. But anyone can just add a bunch of scores together - this score makes the list more "mine." More unique, for lack of a better descriptor. I watch a lot of football. Too much, if you ask anyone else in my life. Lot of film, lot of breakdowns. Still, I won't pretend that I am a scout or expert or coach. Regardless, consider the confidence score like my "film" score. How good is this guy? How bad?</p>
+      <p>Sometimes there is a player that shines on screen, but might not get the opportunities you'd like to see in a fantasy player. Probably because they are stuck behind an even better player on the depth chart, or something similar. I give those players a high confidence score, which does boost their ASP ranking a little bit going into the next season. That, I think, can produce some real value, especially as situations change in the offseason. Again, your mileage may vary, but I was a big proponent of Daniel Jones in 2025... And Calvin Ridley, so we'll call it 50/50. Among other guys that I had starred were: Quinshon Judkins, Jaxson Smith-Njigba, Jalen Coker, Tetairoa McMillan, Emeka Egbuka, Khalil Shakir, Sam Darnold, Ricky Pearsall, and Harold Fannin Jr. Decent hit rate, I think I can do better. Though I will pat myself on the back and say that I was reaching for JSN considerably given the ADP at draft time.</p>
+    </div>
+  </div>
+
+  <!-- ROOKIE EVALUATION -->
+  <div class="section" id="s7">
+    <div class="section-header" onclick="toggleSection('s7')">
+      <span class="section-title">Rookie Evaluation (rASP)</span>
+      <span class="section-football">🏈</span>
+    </div>
+    <div class="section-body">
+      <p>Rookies won't have the same data as other players and they are evaluated differently. I don't really compare production due to the insane differences of college conferences and schedules. A WR putting up insane stats in the MAC is very different than a more modest statline from a WR in the BIG 10 or SEC. It just lacks the parity of the NFL. Because of this, rookies get their own composite score - rASP.</p>
+
+      <div class="subsection">
+        <div class="subsection-title">Age</div>
+        <p>Self-explanatory. A younger prospect tends to be better, but not always. It's a very small percentage of the weighted score and is position specific.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Draft Capital</div>
+        <p>Teams are more incentivized to play higher picks. By fans, by GMs, by media. Everyone can name their team's first round pick, far fewer can name the 7th round dart throw. Less marketing-based, higher round picks tend to be better. Not always, but tend to be. There are always going to be later round heroes - Puka Nacua, anyone? And I don't think the latter round picks are totally unpredictable either, more on that later.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Prospect Grade</div>
+        <p>These are a small percentage of rASP. They are also considered in aggregate between several draft "graders." There is typically very little deviation.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Landing Spot Score</div>
+        <p>Landing spot is my favorite. It's also subjective but based in logic. Some teams are better for players of a certain position than others, and this changes multiple times a year, and during free agency prior to the season starting. It's a numeric score, obviously, but I think looking at an example is the best way to describe it.</p>
+        <p>Let's look at the Raiders. We all know they are taking Fernando Mendoza with the 1st pick - it may as well be written in stone. I'd rate this landing spot close to the top. They have a good new coach, a great RB and TE. I would say that WR and O-line are a bit suspect, but they addressed both in free agency, and will address them both in the draft I'd imagine. For context: added Tyler Linderbaum at center, which is a great move on its own, but also lets Jackson Powers-Johnson move back to guard, which is his natural (read: better) position. They also added Jalen Nailor who I think is better than his stats, but was buried behind Justin Jefferson, Jordan Addison, and TJ Hockenson (all SONS), and hampered by some of the worst QB play I've ever seen. Landing spots are position specific, and quite variable year to year.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">RAS - Relative Athletic Score</div>
+        <p>Pretty self explanatory. It's easier to teach an athletic freak to run better routes than it is to teach the route running technician to be bigger and taller.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Injury Score, Confidence &amp; VORP</div>
+        <p>These all factor in for rookies as well and have been defined in their own sections above.</p>
+      </div>
+    </div>
+  </div>
+
 </div>
+
 <script>
+  function toggleSection(id) {
+    const section = document.getElementById(id);
+    section.classList.toggle('open');
+  }
   function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
 </script>
 </body>
