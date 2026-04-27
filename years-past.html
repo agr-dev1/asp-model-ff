@@ -39,12 +39,9 @@
     /* Collapsible sections — identical pattern to about.html */
     .section { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden; }
     .section-header {
-      display: flex; flex-direction: column;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 1.25rem; cursor: pointer; background: var(--surface);
-      transition: background 0.15s; user-select: none; gap: 0.6rem;
-    }
-    .section-header-top {
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      transition: background 0.15s; user-select: none; gap: 1rem;
     }
     .section-header:hover { background: #202020; }
     .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--accent); }
@@ -58,15 +55,10 @@
     .section-body p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
     .section-body p:last-child { margin-bottom: 0; }
 
-    /* Chevron expand indicator */
+    /* Football toggle indicator */
     .section-meta { display: flex; align-items: center; flex-shrink: 0; }
-    .section-chevron {
-      width: 18px; height: 18px;
-      color: var(--muted);
-      transition: transform 0.3s ease, color 0.2s;
-      flex-shrink: 0;
-    }
-    .section.open .section-chevron { transform: rotate(90deg); color: var(--accent); }
+    .section-football { font-size: 1.2rem; transition: transform 0.3s ease; flex-shrink: 0; display: inline-block; }
+    .section.open .section-football { transform: rotate(90deg); }
 
     /* Stat row */
     .stat-row {
@@ -154,21 +146,26 @@
 
   <div class="section" id="s1">
     <div class="section-header" onclick="toggleSection('s1')">
-      <div class="section-header-top">
-        <span class="section-title">2025 Season: Big misses sponsored by #DraftKings</span>
-        <div class="section-meta">
-          <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </div>
-      <div class="stat-row">
-        <div class="stat-item">Record: <span>184-113</span></div>
-        <div class="stat-item">Winning Percentage: <span>61.95%</span></div>
-        <div class="stat-item">Playoff Percentage: <span>74.6%</span></div>
+      <span class="section-title">2025 Season: Big misses sponsored by #DraftKings</span>
+      <div class="section-meta">
+        <span class="section-football">🏈</span>
       </div>
     </div>
     <div class="section-body">
-      <p>Write about your 2025 season here.</p>
-      <p>More thoughts, players, moments, trades, whatever you want.</p>
+      <div class="stat-row">
+        <div class="stat-item">Record:<span>184-113</span></div>
+        <div class="stat-item">Winning Percentage:<span>61.95%</span></div>
+        <div class="stat-item">Playoff Percentage:<span>74.6%</span></div>
+      </div>
+      <p>Good mix of league formats and strategies to put the method to the test in 2025. Some standard, some hPPR, some full, a little bit of dynasty, and some guillotine. Some good luck and some bad luck that generally averaged out to about, well, average. Huh. Who'd of thunk! Below is some (not all) of the data and highlights. I've since used these to refine the 2026 model, and hopefully make it better. Maybe by 2030 we'll really be cooking with gas.</p>
+      <p>First, let's talk about most drafted guys at each position. This is just for redrafts, as will most of this below data, as dynasty is kind of its own beast. #1 Dak Prescott #2 Drake Maye #3 Kyler Murray. At RB, we had #1 Tyrone Tracy Jr #2 Treveyon Henderson #3 Quinshon Judkins #4 Bijan Robinson #5 De'Von Achane. #1 Calvin Ridley #2 Ricky Pearsall #3 Courtland Sutton #4 Tetairoa Mcmillan #5 Emeka Egbuka. And at TE, we had #1 Brock Bowers #2 Tyler Warren #3 Dalton Kincaid #4 George Kittle #5 Mark Andrews.</p>
+      <p>Dak and Maye were great at QB, Kyler got hurt early and then benched. 2/3 ain't bad. Also before I continue, I'd just like it acknowleged that these weren't necessary my TOP guys at any positions, just the ones I ended up with the most shares of due to targeting them for value or how the board fell or whatever. I think it would have been insane to go in with Dak ranked #1 for me, and he wasn't, but for how late you could get him, the value proposition was unmatched. At WR, Ridley was just a huge doodoo dogshit bust. The Titans were a hot mess to start the year, and as Cam Ward found his footing, Ridley was already out for the year. I just really targeted him because his game is more route running than it is pure athleticism, I thought it would age well and he'd help a rookie Cam Ward. Silly me. Pearsall was hurt most of the year, but looked good in flashes. Sutton (like all Broncos players) was streaky. Tet McMillan I loved as a prospect, didn't love the landing spot, but thought he did pretty good. Egbuka started hot but that Bucs team just sort of fell apart. Sidebar: it's shocking to me that Todd Bowles has survived another year without being fired. Finally, TE. Bowers was too hurt, Kittle was too hurt, Kincaid was too hurt. Andrews was... Bleh. Liked the value on him. Thankfully Warren and my #6 guy, Harold Fannin Jr., saved my bacon. Kincaid is especially a thorn in my side. His talent is so obvious when you watch him, he runs such nice routes, has great hands, and transitions from catch to run so smoothly... He just cannot stay freaking healthy. I'll probably waste more picks on him in future.</p>
+      <p>Okay. Let's talk value. For every draft pick in every league, I tracked VALUE. Basically, this is an ADP weighted projection vs actual for a player. Early round guys have higher expections, later round guys don't. I feel like it's pretty self-explanatory. The following players were my GREAT VALUE (don't sue me, walmart) players of the year. Jaxon Smith-Njigba, Bijan Robinson, De'Von Achane, Drake Maye, Puka Nacua, James Cook, George Pickens, Jonathan Taylor, Trey McBride, Christian McCaffrey, Travis Etienne Jr., and Javonte Williams. There are TERRIBLE VALUES of the year too, but since the vast majority of those are due to injury, I'm not going to list them for the sake of obviousness.</p>
+      <p>Another note on players, my BUSTS of the year, and my GUYS of the year. If we discount injuries, which are hard to forecast sometimes, I think D'onte Thornton Jr. is by far my biggest bust. His hype out of training camp was so good and the Raiders didn't have much target competition at WR. I couldn't predict how much of a dumpster fire that team would be though. It sounds dumb to call Smith-Njigba my guy of the year, even though I was reaching on him 1-2 rounds early every draft when I could. So, I'll say Travis Etienne Jr. He was my 6th most drafted RB, grabbed him everywhere I could really late, thinking his 2024 season was a fluke. And he was one of my walmart players of the year, so I'm happy with that.</p>
+      <p>Two more interesting metrics were playoff percentage by ASP score and playoff percentage by pick position. ASP Tier was interesting, teams with what I'd consider good (league size dependent) made playoffs at a 83.33% clip, an improvement of 8.73% over average. Teams with OK ASP scores faired the worst, oddly, making playoffs at a rate of 63.64%. Finally, teams with bad ASP scores made playoffs at 75%. Interesting, though not the end all, be all. I'm certain some of that is luck and some of that is me making bad sit/start decisions, trades, or waiver pickups. Pick position I think is more interesting, and backs up an opinion I've held for a long time. Teams that picked in the top third of the draft made playoffs at a rate of 66.67%. Teams that picked in the middle third made playoffs at a rate of just 57.14%, and teams in the back third made playoffs at... Wait for it... 100%. Again, could be a fluke, but getting that back to back pick to end the first, start the second really helps with balanced team building.</p>
+      <p>There is talk every year about drafting strategy. I do have some notes on this in my 'Draft Notes' page, and I do think it is somewhat cyclical based on the meta of league offenses and defenses year to year, as well as player and personnel changes. All that being said, here are the strategies/draft choices I evaluated with my 2025 leagues: Early Elite QB, Early Elite TE, WR Heavy, WR Biased Early Picks, RB Heavy, RB Biased Early Picks. Interestingly, going elite QB early (or not) didn't meaningfully increase playoff percentage either way. Your mileage may vary in something like superflex or smaller roster leagues, but I didn't find it to make a huge difference. That being said, my early QB was almost exclusively Josh Allen. Had it been Lamar, I think it could have been worse due to his mid-season injury. Taking an early TE actually reduced my playoff percentage, which could just be due to Bowers injury, but I had a lot of McBride shares as well. I wouldn't live or die by this rule, but in general, I think you can find 80% of the production on a later round TE and get a better RB/WR with that pick. Usually.</p>
+      <p>Heavy/Bias for WRs and RBs is where the strategy points get interesting. Going heavy on RBs in the draft increased playoff chances by 25%!! That is a lot! Biasing RBs produced a similar result, as most heavy RB teams also biased RBs. Funny how that works. Here's where it gets weird, heavy/biased WR teams ALSO had a marked improved, 16% on average. It's the balanced teams that actually had slightly decreased playoff percentage. Now I'm so far from a data analyst that it isn't even funny, but I do think this is a testament to taking BPA regardless, especially in leagues with a flex. Sometimes I find myself reaching a little bit during a positional run, and getting a worse player. Let the value come to you. There will always be a few waiver heroes and trades to make. Plus, doing prep work prior to the draft helps you hit on more later round picks to make up for this.</p>
+      <p>Some closing thoughts from my notes: these were the funniest tidbits I could find, looking through everything. On Jaxson Dart: "I can see a scenario where he becomes the starter for the giants coaches to try and save their jobs. not saying its super likely, but he looked good in preseason. in a moment of desperation, perhaps." On JJ McCarthy (and the Vikings pass catchers): "If anyone can get good performance out of mccarthy, it is KOC." Turns out, even KOC couldn't fix the infamous nine. On the 49ers pass catchers: "juaun jennings this, blah blah blah. peasall is better. if jennings were gonna be something, he already would be!" On Kyle Pitts, everyone's favorite fantasy TE: "No. I'm not doing this again.... okay but like if he falls low enough..... ok he is only 24 and has the size and speed that cant be taught. his rookie season cant be ignored! im ready to be burned again i think. penix may be able to actually get him the ball."</p>
     </div>
   </div>
 
