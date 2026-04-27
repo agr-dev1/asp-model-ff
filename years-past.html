@@ -39,9 +39,12 @@
     /* Collapsible sections — identical pattern to about.html */
     .section { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden; }
     .section-header {
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; flex-direction: column;
       padding: 1rem 1.25rem; cursor: pointer; background: var(--surface);
-      transition: background 0.15s; user-select: none; gap: 1rem;
+      transition: background 0.15s; user-select: none; gap: 0.6rem;
+    }
+    .section-header-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
     .section-header:hover { background: #202020; }
     .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--accent); }
@@ -74,7 +77,7 @@
     /* Stat row */
     .stat-row {
       display: flex; flex-wrap: wrap; gap: 6px 20px;
-      margin-top: 1rem;
+      margin-bottom: 1rem;
       padding: 0.75rem 1rem;
       background: #141414;
       border-radius: 4px;
@@ -118,7 +121,7 @@
     <a href="draft.html">Draft Tool [BETA]</a>
     <a href="about.html">About ASP</a>
     <a href="draft-notes.html">Draft Notes</a>
-    <a href="years-past.html" class="active">Past Results</a>
+    <a href="years-past.html" class="active">Past Seasons</a>
   </div>
   <button class="hamburger" onclick="toggleDrawer()">
     <span></span><span></span><span></span>
@@ -135,7 +138,7 @@
     <a href="draft.html">Draft Tool [BETA]</a>
     <a href="about.html">About ASP</a>
     <a href="draft-notes.html">Draft Notes</a>
-    <a href="years-past.html" class="active">Past Results</a>
+    <a href="years-past.html" class="active">Past Seasons</a>
   </div>
 </nav>
 
@@ -162,16 +165,17 @@
 
   <div class="section" id="s1">
     <div class="section-header" onclick="toggleSection('s1')">
-      <span class="section-title">2025 Season: Big misses sponsored by #DraftKings</span>
-      <div class="section-meta">
-        <span class="result-badge badge-win">Pretty Good!</span>
-        <span class="section-football">🏈</span>
-
-          <div class="stat-row">
-            <div class="stat-item">Record:<span>184-113</span></div>
-            <div class="stat-item">Winning Percentage:<span>61.95%</span></div>
-            <div class="stat-item">Playoff Percentage:<span>74.6%</span></div>
-          </div>
+      <div class="section-header-top">
+        <span class="section-title">2025 Season: Big misses sponsored by #DraftKings</span>
+        <div class="section-meta">
+          <span class="result-badge badge-win">Pretty Good!</span>
+          <span class="section-football">🏈</span>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-item">Record:<span>184-113</span></div>
+        <div class="stat-item">Winning Percentage:<span>61.95%</span></div>
+        <div class="stat-item">Playoff Percentage:<span>74.6%</span></div>
       </div>
     </div>
     <div class="section-body">
