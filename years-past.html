@@ -48,8 +48,6 @@
     }
     .section-header:hover { background: #202020; }
     .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--accent); }
-    .section-football { font-size: 1.2rem; transition: transform 0.3s ease; flex-shrink: 0; display: inline-block; }
-    .section.open .section-football { transform: rotate(90deg); }
     .section-body {
       max-height: 0; overflow: hidden;
       transition: max-height 0.4s ease, padding 0.3s ease;
@@ -60,19 +58,15 @@
     .section-body p { color: #ccc; line-height: 1.75; margin-bottom: 1.25rem; font-size: 0.95rem; }
     .section-body p:last-child { margin-bottom: 0; }
 
-    /* Result badge — sits left of the football emoji */
-    .section-meta { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
-    .result-badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.06em;
-      padding: 3px 9px;
-      border-radius: 20px;
-      border: 1px solid transparent;
+    /* Chevron expand indicator */
+    .section-meta { display: flex; align-items: center; flex-shrink: 0; }
+    .section-chevron {
+      width: 18px; height: 18px;
+      color: var(--muted);
+      transition: transform 0.3s ease, color 0.2s;
+      flex-shrink: 0;
     }
-    .badge-win  { background: #0d2e12; color: #4caf76; border-color: #1a5c24; }
-    .badge-mid  { background: #1a1f2e; color: #7da4c9; border-color: #2a3a50; }
-    .badge-loss { background: #2e0d0d; color: #c97d7d; border-color: #5c1a1a; }
+    .section.open .section-chevron { transform: rotate(90deg); color: var(--accent); }
 
     /* Stat row */
     .stat-row {
@@ -148,19 +142,14 @@
 </div>
 
 <div class="content">
-  <div class="placeholder-note">A look back at previous seasons: the good, the bad, and the cursed.</div>
+  <div class="placeholder-note">A look back at previous seasons &mdash; the good, the bad, and the cursed.</div>
 
   <!--
     HOW TO ADD A SEASON:
     1. Copy a .section block below
     2. Give it a unique id (s2, s3, s4...)
-    3. Update the title, badge class + text, body paragraphs, and stat-row values
+    3. Update the title, body paragraphs, and stat-row values
     4. Delete the stat-row entirely if you don't want it for that year
-
-    Badge classes:
-      badge-win  = great finish / champion
-      badge-mid  = playoffs / middle of the pack
-      badge-loss = rough year / missed playoffs
   -->
 
   <div class="section" id="s1">
@@ -168,14 +157,13 @@
       <div class="section-header-top">
         <span class="section-title">2025 Season: Big misses sponsored by #DraftKings</span>
         <div class="section-meta">
-          <span class="result-badge badge-win">Pretty Good!</span>
-          <span class="section-football">🏈</span>
+          <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
       <div class="stat-row">
-        <div class="stat-item">Record:<span>184-113</span></div>
-        <div class="stat-item">Winning Percentage:<span>61.95%</span></div>
-        <div class="stat-item">Playoff Percentage:<span>74.6%</span></div>
+        <div class="stat-item">Record: <span>184-113</span></div>
+        <div class="stat-item">Winning Percentage: <span>61.95%</span></div>
+        <div class="stat-item">Playoff Percentage: <span>74.6%</span></div>
       </div>
     </div>
     <div class="section-body">
