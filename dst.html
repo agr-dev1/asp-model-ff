@@ -14,91 +14,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DST Rankings - ASP Model FF</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0a0a; --surface: #181818; --border: #2a2a2a; --border-bright: #3a3a3a;
-    --text: #f0f0f0; --muted: #888888; --accent: #ffffff; --accent-dim: #cccccc;
-    --rank-col: #141414; --row-hover: #181818; --header-bg: #111111;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
-  nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; border-bottom: 1px solid var(--border); background: #080808; position: sticky; top: 0; z-index: 100; }
-  .nav-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; }
-  .nav-links { display: flex; gap: 0.25rem; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.75rem; border-radius: 4px; transition: color 0.15s, background 0.15s; }
-  .nav-links a:hover { color: var(--text); background: var(--surface); }
-  .nav-links a.active { color: var(--accent); background: var(--surface); }
-  .hero { padding: 3rem 2rem 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; background: #0f0f0f; }
-  .pos-badge { display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.5rem; }
-  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: 0.04em; line-height: 0.9; color: var(--accent); }
-  .hero-meta { font-size: 0.75rem; color: #aaaaaa; margin-top: 1rem; font-family: 'DM Mono', monospace; }
-  .hero-right { text-align: right; }
-  .asp-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 0.25rem; }
-  .player-count { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--accent); line-height: 1; }
-  .controls { padding: 1rem 2rem; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: center; background: #0c0c0c; }
-  .search-wrap { position: relative; flex: 1; max-width: 320px; }
-  .search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); padding: 0.5rem 0.75rem 0.5rem 2.25rem; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.8rem; outline: none; transition: border-color 0.15s; }
-  .search-wrap input:focus { border-color: #666; }
-  .search-wrap input::placeholder { color: var(--muted); }
-  .search-icon { position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.8rem; }
-  .last-updated { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-left: auto; }
-  .table-wrap { overflow-x: auto; padding: 0 2rem 4rem; }
-  table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 0.85rem; }
-  thead tr { background: var(--header-bg); border-bottom: 1px solid var(--border-bright); }
-  th { padding: 0.65rem 1rem; text-align: left; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #999; white-space: nowrap; }
-  th.sortable { cursor: pointer; user-select: none; transition: color 0.15s; }
-  th.sortable:hover { color: var(--text); }
-  th.sorted { color: var(--accent); }
-  th:first-child { width: 56px; text-align: center; }
-  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; animation: fadeIn 0.3s ease both; }
-  tbody tr:hover { background: var(--row-hover); }
-  tbody tr:nth-child(5n) { border-bottom: 1px solid var(--border-bright); }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-  td { padding: 0.75rem 1rem; color: var(--text); white-space: nowrap; }
-  td:first-child { text-align: center; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #888; background: var(--rank-col); border-right: 1px solid var(--border); width: 56px; }
-  .rank-1 td:first-child { color: #ffd700 !important; }
-  .rank-2 td:first-child { color: #c0c0c0 !important; }
-  .rank-3 td:first-child { color: #cd7f32 !important; }
-  .player-name { font-weight: 500; color: var(--accent); }
-  .team-badge { font-family: 'DM Mono', monospace; font-size: 0.77rem; font-weight: 600; background: #b0b0b0; padding: 0.2rem 0.5rem; border-radius: 3px; border: 1px solid var(--border-bright); }
-  .asp-score { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
-  .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6rem 2rem; gap: 1rem; color: var(--muted); }
-  .spinner { width: 32px; height: 32px; border: 2px solid var(--border-bright); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading p { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; }
-  .error-msg { padding: 4rem 2rem; text-align: center; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.8rem; }
-  .sort-arrow { margin-left: 4px; opacity: 0.4; }
-  th.sorted .sort-arrow { opacity: 1; }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-  .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
-  .drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: #0a0a0a; border-left: 1px solid #2a2a2a; z-index: 200; transition: right 0.3s ease; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
-  .drawer a { color: #888; text-decoration: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.75rem 0; border-bottom: 1px solid #1a1a1a; transition: color 0.15s; }
-  .drawer a:hover, .drawer a.active { color: #fff; }
-  .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; }
-  .drawer-open .drawer { right: 0; }
-  .drawer-open .drawer-overlay { display: block; }
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; align-items: center; justify-content: center; padding: 1rem; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: #363636; border: 1px solid #3a3a3a; border-radius: 8px; padding: 2rem; max-width: 480px; width: 100%; position: relative; animation: fadeIn 0.2s ease; }
-  .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: #888; font-size: 1.2rem; cursor: pointer; line-height: 1; }
-  .modal-close:hover { color: #fff; }
-  .modal-pos { font-family: 'Bebas Neue', sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; color: #888; margin-bottom: 0.25rem; }
-  .modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: #fff; line-height: 1; margin-bottom: 1.25rem; }
-  .modal-stats { display: flex; gap: 2.5rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid #2a2a2a; }
-  .modal-stat { display: flex; flex-direction: column; gap: 0.25rem; }
-  .modal-stat-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #666; }
-  .modal-stat-value { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 500; color: #fff; }
-  .modal-notes { font-size: 0.88rem; line-height: 1.7; color: #bbb; }
-  .modal-no-notes { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: #555; font-style: italic; }
-  @media (max-width: 600px) {
-    nav { padding: 0 1rem; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .hero { padding: 2rem 1rem 1.5rem; }
-    .controls { padding: 0.75rem 1rem; }
-    .table-wrap { padding: 0 0 3rem; }
-  }
-</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+  
 </head>
 <body>
 
@@ -115,6 +34,7 @@
     <a href="draft.html" class="active">Draft Tool [BETA]</a>
     <a href="about.html">About ASP</a>
     <a href="draft-notes.html">Draft Notes</a>
+    <a href="team-outlooks.html">Team Outlooks</a>
     <a href="years-past.html">Past Results</a>
   </div>
   <button class="hamburger" onclick="toggleDrawer()">
@@ -132,6 +52,7 @@
     <a href="draft.html" class="active">Draft Tool [BETA]</a>
     <a href="about.html">About ASP</a>
     <a href="draft-notes.html">Draft Notes</a>
+    <a href="team-outlooks.html">Team Outlooks</a>
     <a href="years-past.html">Past Results</a>
   </div>
 </nav>
