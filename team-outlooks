@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QEQFCL7ZJY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QEQFCL7ZJY');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Outlooks - ASP Model FF</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a; --surface: #181818; --border: #2a2a2a; --border-bright: #3a3a3a;
+      --text: #f0f0f0; --muted: #B5B5B5; --accent: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; border-bottom: 1px solid var(--border); background: #080808; position: sticky; top: 0; z-index: 100; }
+    .nav-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; }
+    .nav-links { display: flex; gap: 0.25rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.75rem; border-radius: 4px; transition: color 0.15s, background 0.15s; }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a.active { color: var(--accent); background: var(--surface); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
+    .drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: #0a0a0a; border-left: 1px solid #2a2a2a; z-index: 200; transition: right 0.3s ease; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .drawer a { color: #888; text-decoration: none; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.75rem 0; border-bottom: 1px solid #1a1a1a; transition: color 0.15s; }
+    .drawer a:hover, .drawer a.active { color: #fff; }
+    .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; }
+    .drawer-open .drawer { right: 0; }
+    .drawer-open .drawer-overlay { display: block; }
+
+    .hero { padding: 3rem 2rem 2rem; border-bottom: 1px solid var(--border); background: #0f0f0f; display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }
+    .pos-badge { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.5rem; }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: 0.04em; line-height: 0.9; color: var(--accent); }
+    .hero-meta { font-size: 0.75rem; color: #aaaaaa; margin-top: 1rem; font-family: 'DM Mono', monospace; }
+    .hero-right { text-align: right; flex-shrink: 0; }
+    .hero-count-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 0.25rem; }
+    .hero-count { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--accent); line-height: 1; }
+
+    .content { max-width: 760px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+    .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6rem 2rem; gap: 1rem; color: var(--muted); }
+    .spinner { width: 32px; height: 32px; border: 2px solid var(--border-bright); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; }
+
+    /* TEAM SECTIONS */
+    .team-section { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden; position: relative; }
+
+    .team-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.85rem 1.25rem; cursor: pointer;
+      background: var(--surface); transition: background 0.15s;
+      user-select: none; position: relative; overflow: hidden;
+    }
+    .team-header:hover { background: #202020; }
+
+    /* Color bar on left */
+    .team-color-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+
+    /* Faded abbr watermark */
+    .team-watermark {
+      position: absolute; right: 120px; top: 50%; transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif; font-size: 4rem; letter-spacing: 0.05em;
+      opacity: 0.07; pointer-events: none; line-height: 1;
+    }
+
+    .team-rank {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: #555;
+      width: 48px; text-align: center; flex-shrink: 0; line-height: 1;
+    }
+
+    .team-info { flex: 1; min-width: 0; padding-left: 0.5rem; }
+    .team-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.04em; color: var(--accent); line-height: 1; }
+    .team-abbr-badge {
+      display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.68rem;
+      font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 3px;
+      background: #b0b0b0; border: 1px solid #3a3a3a; margin-top: 0.2rem;
+    }
+
+    .team-football { font-size: 1.1rem; transition: transform 0.3s ease; flex-shrink: 0; display: inline-block; }
+    .team-section.open .team-football { transform: rotate(90deg); }
+
+    .team-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 1.25rem; background: #0e0e0e;
+      position: relative;
+    }
+    .team-section.open .team-body { max-height: 2000px; padding: 1.25rem 1.25rem 1.25rem 1.5rem; }
+    .team-body p { color: #ccc; line-height: 1.75; margin-bottom: 1rem; font-size: 0.95rem; }
+    .team-body p:last-child { margin-bottom: 0; }
+    .no-thoughts { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: #444; font-style: italic; }
+
+    .empty-state { padding: 4rem 2rem; text-align: center; color: #444; font-family: 'DM Mono', monospace; font-size: 0.8rem; }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 2rem 1rem 1.5rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .content { padding: 1.5rem 1rem 4rem; }
+      .team-watermark { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">ASP Model FF</a>
+  <div class="nav-links">
+    <a href="index.html">Overall</a>
+    <a href="qb.html">QB</a>
+    <a href="rb.html">RB</a>
+    <a href="wr.html">WR</a>
+    <a href="te.html">TE</a>
+    <a href="k.html">K</a>
+    <a href="dst.html">DST</a>
+    <a href="draft.html">Draft Tool [BETA]</a>
+    <a href="about.html">About ASP</a>
+    <a href="draft-notes.html">Draft Notes</a>
+    <a href="years-past.html">Years Past</a>
+    <a href="team-outlooks.html" class="active">Team Outlooks</a>
+  </div>
+  <button class="hamburger" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div class="drawer">
+    <a href="index.html">Overall</a>
+    <a href="qb.html">QB</a>
+    <a href="rb.html">RB</a>
+    <a href="wr.html">WR</a>
+    <a href="te.html">TE</a>
+    <a href="k.html">K</a>
+    <a href="dst.html">DST</a>
+    <a href="draft.html">Draft Tool [BETA]</a>
+    <a href="about.html">About ASP</a>
+    <a href="draft-notes.html">Draft Notes</a>
+    <a href="years-past.html">Years Past</a>
+    <a href="team-outlooks.html" class="active">Team Outlooks</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="pos-badge">2026 Season - ASP Model</div>
+    <h1>Team<br>Outlooks</h1>
+    <div class="hero-meta">Updates automatically</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-count-label">Teams Ranked</div>
+    <div class="hero-count" id="team-count">-</div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Fetching team outlooks...</p>
+  </div>
+  <div id="teams-container" style="display:none"></div>
+  <div class="empty-state" id="error-msg" style="display:none">Unable to load team outlooks. Please try refreshing.</div>
+</div>
+
+<script>
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR7MWIjXK8ZMZBUZScwDM3nmNX2OtFPbQ1Oe72qAsC2uisQG5TA2nb40jkvIcaiiIEM-EnLx_WGNPl/pub?gid=1758079558&single=true&output=csv';
+
+const TEAM_COLORS = {
+  ARI:'#97233f', ATL:'#a71930', BAL:'#241773', BUF:'#00338d', CAR:'#0085ca',
+  CHI:'#c83803', CIN:'#fb4f14', CLE:'#ff3c00', DAL:'#003594', DEN:'#fb4f14',
+  DET:'#0076b6', GB:'#203731', HOU:'#03202f', IND:'#002c5f', JAX:'#006778',
+  KC:'#e31837', LAC:'#0080c6', LAR:'#003594', LV:'#a5acaf', MIA:'#008e97',
+  MIN:'#4f2683', NE:'#c60c30', NO:'#d3bc8d', NYG:'#0b2265', NYJ:'#125740',
+  PHI:'#004c54', PIT:'#ffb612', SEA:'#69be28', SF:'#aa0000', TB:'#d50a0a',
+  TEN:'#4b92db', WSH:'#773141',
+};
+
+function parseCSV(text) {
+  return text.trim().split('\n').map(line => {
+    const cols = []; let cur = ''; let inQ = false;
+    for (const c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur.trim()); return cols;
+  });
+}
+
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+async function loadData() {
+  try {
+    const res = await fetch(SHEET_URL);
+    if (!res.ok) throw new Error('fetch failed');
+    const text = await res.text();
+    const rows = parseCSV(text).slice(1).filter(r => r[0] && r[0].trim());
+
+    // Only show teams that have a ranking
+    const ranked = rows.filter(r => r[2] && r[2].trim() !== '');
+    ranked.sort((a, b) => parseInt(a[2]) - parseInt(b[2]));
+
+    document.getElementById('loading').style.display = 'none';
+
+    if (!ranked.length) {
+      document.getElementById('error-msg').style.display = 'block';
+      document.getElementById('error-msg').textContent = 'No teams ranked yet. Check back soon!';
+      return;
+    }
+
+    document.getElementById('team-count').textContent = ranked.length;
+    document.getElementById('teams-container').style.display = 'block';
+
+    document.getElementById('teams-container').innerHTML = ranked.map((row, i) => {
+      const fullName = row[0] || '';
+      const abbr = (row[1] || '').trim();
+      const rank = row[2] || '';
+      const thoughts = row[3] || '';
+      const color = TEAM_COLORS[abbr] || '#555555';
+
+      const id = 'team-' + i;
+
+      // Split thoughts into paragraphs on double newline or sentence groups
+      const paragraphs = thoughts
+        ? thoughts.split(/\n+/).filter(p => p.trim()).map(p => `<p>${p.trim()}</p>`).join('')
+        : `<p class="no-thoughts">No thoughts yet - check back soon.</p>`;
+
+      return `
+        <div class="team-section" id="${id}">
+          <div class="team-header" onclick="toggleSection('${id}')">
+            <div class="team-color-bar" style="background:${color}"></div>
+            <div class="team-watermark" style="color:${color}">${abbr}</div>
+            <div class="team-rank">${rank}</div>
+            <div class="team-info">
+              <div class="team-name">${fullName}</div>
+              <span class="team-abbr-badge" style="color:${color}">${abbr}</span>
+            </div>
+            <span class="team-football">🏈</span>
+          </div>
+          <div class="team-body">
+            ${paragraphs}
+          </div>
+        </div>`;
+    }).join('');
+
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'block';
+  }
+}
+
+function toggleDrawer() { document.body.classList.toggle('drawer-open'); }
+
+loadData();
+</script>
+</body>
+</html>
