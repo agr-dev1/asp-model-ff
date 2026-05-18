@@ -335,6 +335,7 @@ td:first-child {
   position: absolute; right: 120px; top: 50%; transform: translateY(-50%);
   font-family: 'Bebas Neue', sans-serif; font-size: 4rem; letter-spacing: 0.05em;
   opacity: 0.40; pointer-events: none; line-height: 1;
+  text-shadow: 0 0 30px currentColor, 0 0 60px currentColor;
 }
 .team-rank {
   font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: #555;
