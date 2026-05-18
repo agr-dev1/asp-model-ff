@@ -335,7 +335,7 @@ td:first-child {
   position: absolute; right: 120px; top: 50%; transform: translateY(-50%);
   font-family: 'Bebas Neue', sans-serif; font-size: 4rem; letter-spacing: 0.05em;
   opacity: 0.40; pointer-events: none; line-height: 1;
-  text-shadow: 0 0 30px currentColor, 0 0 60px currentColor;
+  text-shadow: 0 0 20px currentColor, 0 0 50px currentColor;
 }
 .team-rank {
   font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: #555;
@@ -353,7 +353,7 @@ td:first-child {
 .team-body {
   max-height: 0; overflow: hidden;
   transition: max-height 0.4s ease, padding 0.3s ease;
-  padding: 0 1.25rem; background: #0e0e0e;
+  padding: 0 1.25rem; background: #1a1a1a;
 }
 .team-section.open .team-body { max-height: 2000px; padding: 1.25rem 1.25rem 1.25rem 1.5rem; }
 .team-body p { color: #ccc; line-height: 1.75; margin-bottom: 1rem; font-size: 0.95rem; }
