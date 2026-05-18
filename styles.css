@@ -329,7 +329,7 @@ td:first-child {
   background: var(--surface); transition: background 0.15s;
   user-select: none; position: relative; overflow: hidden;
 }
-.team-header:hover { background: #202020; }
+.team-header:hover { background: #383838; }
 .team-color-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
 .team-watermark {
   position: absolute; right: 120px; top: 50%; transform: translateY(-50%);
